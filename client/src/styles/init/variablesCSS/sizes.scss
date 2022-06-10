@@ -1,0 +1,65 @@
+@use "sass:math";
+@import "styles/includes/variablesSCSS/sizes.scss";
+
+html {
+  --borderRadiusMedium: var(--space_normal);
+  --borderRadiusBig: var(--space_big);
+  --borderRadiusVeryBig: var(--space_veryBig);
+}
+
+html {
+  --heightSmallElement: var(--space_big);
+  --heightMediumElement: var(--space_veryBig);
+  --heightBigElement: var(--space_biggest);
+
+  --heightNavbarTotal: calc(var(--heightBigElement) + var(--space_normal) * 2);
+  --heightNavbarPanel: var(--heightBigElement);
+
+  --heightSvgSmall: var(--space_normal);
+  --heightSvgMedium: var(--space_big);
+}
+
+@media (max-width: $widthNavbarMax) {
+  html {
+    --heightNavbarTotal: calc(
+      var(--heightBigElement) * 2 + var(--space_normal) * 3
+    );
+  }
+}
+
+html {
+  --widthSmallContainer: #{$widthSmallContainer};
+  --widthReadContainer: #{$widthReadContainer};
+  --widthTightScreen: #{$widthTightScreen};
+  --widthWidestContainer: #{$widthWidestContainer};
+  --widthNavbarMax: #{$widthNavbarMax};
+}
+
+@mixin genSpaces($spaceNormal) {
+  --space_cornerPlusedHeight: 4px;
+  --space_smallest: #{math.div($spaceNormal, 2.5)};
+  --space_verySmall: #{math.div($spaceNormal, 2)};
+  --space_small: #{math.div($spaceNormal, 1.5)};
+  --space_normal: #{$spaceNormal};
+  --space_big: #{$spaceNormal * 1.5};
+  --space_veryBig: #{$spaceNormal * 2};
+  --space_biggest: #{$spaceNormal * 3};
+}
+
+html {
+  @include genSpaces(13px);
+
+  --spaceToScreenEdges: var(--space_big);
+  --spaceAppPaddingTop: var(--space_big);
+  --spaceAppPaddingBottom: var(--space_biggest);
+  --spacePaddingBlock: var(--space_big);
+
+  --scrollbarBorder: 4px;
+  --scrollbarBodyBorder: 8px;
+}
+
+@media (max-width: $px480) {
+  html {
+    @include genSpaces(11px);
+  }
+}

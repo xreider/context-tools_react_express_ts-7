@@ -1,0 +1,70 @@
+@import "src/styles/includes/common/elements.scss";
+
+.AInput_container {
+  z-index: 30;
+  display: flex;
+  // border: 1px solid var(--colorBorderInactive);
+  height: var(--heightNavbarPanel);
+  // border-radius: var(--borderRadiusMedium);
+  transition: var(--speed_normal);
+
+  &.focused {
+    border-color: var(--colorBorderActive);
+  }
+
+  &.kind_simple {
+    border-bottom: 2px solid var(--colorBorderInactive);
+    // box-shadow: rgb(0 0 0 / 0%) 0px 1px 5px 0px;
+    border-radius: 0;
+    border-top-left-radius: var(--borderRadiusMedium);
+    border-top-right-radius: var(--borderRadiusMedium);
+    // &:hover,
+    // &.focused {
+    //   border-color: var(--colorBorderActive);
+    //   box-shadow: rgb(0 0 0 / 22%) 0px 4px 10px 1px;
+    // }
+  }
+  &.behaviour_neumorphicHiddenOnCalm {
+    box-shadow: var(--neumorphicShadowTransparent);
+    &:hover,
+    &.focused {
+      border-color: var(--colorBorderActive);
+      box-shadow: var(--neumorphicShadowShown);
+    }
+  }
+}
+
+.AInput_input {
+  padding: var(--space_verySmall);
+  border: none;
+}
+
+.AInput_input_hasPrefixBtns {
+  padding-left: 0;
+}
+.AInput_input_hasPostfixBtns {
+  padding-right: 0;
+}
+
+.AInput_sideBtn {
+  svg {
+    fill: var(--colorSVG_font);
+  }
+}
+
+.AInput_sideBtn_decoration {
+  svg {
+    fill: var(--colorSVG_inactive) !important;
+  }
+}
+
+.AInput_eraseBtn {
+  // @include touchActionNone;
+  opacity: 0;
+  transition: var(--speed_normal);
+  cursor: text;
+}
+.AInput_eraseBtn_shown {
+  // @include touchActionAll;
+  opacity: 1;
+}

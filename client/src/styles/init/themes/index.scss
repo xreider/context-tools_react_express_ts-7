@@ -1,0 +1,105 @@
+@import "styles/init/themes/includes/schemas.scss";
+
+// duplicating in client\src\constants\common\colors.ts
+//                client\src\styles\init\themes\includes\schemas.scss
+$fields: readable, neutral, notice;
+
+@each $field in $fields {
+  .field_#{$field} {
+    @include colorSchemaLight($field);
+
+    --scrollbarWidth: var(--heightSvgMedium);
+
+    background-color: var(--colorBG);
+    color: var(--colorFont);
+
+    // svg
+    // duplicating in client\src\styles\init\themes\includes\schemas.scss
+    //                client\src\constants\common\colors.ts
+    svg:not(.colorSVG_none) {
+      fill: var(--colorSVG_normal);
+    }
+    // should not include "none" kind
+    @each $colorSVG in active, error, font, inactive, normal {
+      .colorSVG_#{$colorSVG}:not(.colorSVG_none) {
+        &,
+        svg {
+          fill: var(--colorSVG_#{$colorSVG});
+        }
+      }
+    }
+
+    // scrollbar
+    &,
+    * {
+      &::-webkit-scrollbar {
+        width: var(--scrollbarWidth);
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--scrollbarTrackStaticColor);
+        border-radius: 50px;
+
+        border: var(--scrollbarBorder) solid rgba(236, 13, 13, 0);
+        background-clip: padding-box;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--scrollbarThumbStaticColor);
+        border-radius: 50px;
+
+        border: var(--scrollbarBorder) solid rgba(0, 0, 0, 0);
+        background-clip: padding-box;
+
+        min-height: min(200px, 20vh);
+
+        &:hover {
+          background: var(--scrollbarThumbHoverColor);
+        }
+        &:active {
+          background: var(--scrollbarThumbActiveColor);
+        }
+        &:hover,
+        &:active {
+          border: var(--scrollbarBorder) solid rgba(0, 0, 0, 0);
+          background-clip: padding-box;
+        }
+      }
+    }
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  body[data-device="desktop"] {
+    scrollbar-gutter: stable;
+    scroll-margin-top: 100px;
+    &::-webkit-scrollbar {
+      background-color: var(--colorBG);
+      width: var(--space_veryBig);
+    }
+
+    &::-webkit-scrollbar-track {
+      margin-top: calc(var(--heightNavbarTotal) - var(--scrollbarBodyBorder));
+    }
+
+    &::-webkit-scrollbar-track {
+      border-left-width: 1px;
+    }
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track {
+      border-radius: var(--borderRadiusVeryBig);
+      border-right: none;
+
+      border: var(--scrollbarBodyBorder) solid rgba(0, 0, 0, 0);
+      // border-left-width: calc(var(--scrollbarBodyBorder) - 3px);
+      background-clip: padding-box;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      &:hover,
+      &:active {
+        background-color: var(--colorActive);
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+// duplicating in client\src\constants\common\colors.ts
+//                client\src\styles\init\themes\index.scss
+
+// $kind: readable, neutral, notice
+@mixin colorSchemaDark($kind) {
+}
+
+// $kind: readable, neutral, notice
+@mixin colorSchemaLight($kind) {
+  @if $kind == readable {
+    --colorBG: #f4f4f4;
+    --colorBG: #f5f5f5;
+    --colorBG: #fcfcfc;
+  } @else if $kind == neutral {
+    --colorBG: var(--globalFieldNeutralBG);
+  } @else if $kind == notice {
+    --colorBG: #e2f7ff;
+  }
+
+  --colorActive: #588dff;
+  --colorInactive: #9ca5ac;
+  --colorSecondBrandColor: #f9ad97;
+
+  --colorHoverMask: rgba(0, 0, 0, 0.05);
+  --colorFont: rgb(64 62 61);
+  // --colorBorderInactive: #afafaf;
+  --colorBorderInactive: var(--colorInactive);
+  --colorBorderActive: #777777;
+  --colorBorderActive: var(--colorActive);
+
+  // duplicating in client\src\styles\init\themes\index.scss
+  //                client\src\constants\common\colors.ts
+  // should not include "none" kind
+  --colorSVG_normal: #65707a;
+  --colorSVG_inactive: var(--colorInactive);
+  --colorSVG_active: var(--colorActive);
+  --colorSVG_error: #ff566c;
+  --colorSVG_font: var(--colorFont);
+
+  --colorShadowLight: #ffffff;
+  --colorShadowDark: #e9ebec;
+  --colorShadowDark: #e9ebf1;
+
+  $color: #9fa7af;
+  --scrollbarTrackStaticColor: #d5d9df;
+  --scrollbarThumbStaticColor: #{$color};
+  --scrollbarThumbHoverColor: #{$color};
+  --scrollbarThumbActiveColor: #{$color};
+
+  --boxShadowBigForBigAreasInset: #{boxShadowBigForBigAreas(inset, bottom)};
+  --boxShadowBigForBigAreasOutsideBottom: #{boxShadowBigForBigAreas(
+      outside,
+      bottom
+    )};
+  --boxShadowSmallForBigAreasOutsideTop: #{boxShadowBigForBigAreas(outside, top)};
+
+  --neumorphicShadowTransparent: 0 0 0 transparent, 0 0 0 transparent;
+  --neumorphicShadowShown: 4px 4px 8px var(--colorShadowDark),
+    -4px -4px 8px var(--colorShadowLight);
+  --neumorphicShadowActive: 1px 1px 4px var(--colorShadowDark),
+    -1px -1px 4px var(--colorShadowLight);
+}
+
+@function boxShadowBigForBigAreas($insetOrOutside, $topOrBottom) {
+  $side: inset;
+  @if $insetOrOutside == outside {
+    $side: "";
+  }
+
+  $dir: 2px;
+  @if $topOrBottom == top {
+    $dir: -2px;
+  }
+
+  // @return var(--colorShadowDark) 0px 0px 2px 0px #{$side},
+  //   var(--colorShadowDark) 0px #{$dir} 4px #{$side};
+  @return var(--colorShadowDark) 0px 0px 1px 1px #{$side},
+    var(--colorShadowDark) 0px 1px 2px 0px #{$side};
+}

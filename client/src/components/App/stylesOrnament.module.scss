@@ -1,0 +1,79 @@
+@import "src/styles/includes/common/elements.scss";
+
+$widthBluredZones: 2px;
+$offsetBluredZones: 5px;
+$borderRadius: var(--borderRadiusVeryBig);
+
+.AppNavbar_wrapper {
+  &::after {
+    bottom: 0;
+  }
+}
+
+.center {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: transparent;
+  width: 100%;
+  height: calc(100% - var(--heightNavbarTotal));
+  z-index: 10;
+  border-top-right-radius: $borderRadius;
+  box-shadow: var(--boxShadowBigForBigAreasInset);
+  z-index: 9;
+}
+
+.center,
+.gradient {
+  @include touchActionNone;
+}
+
+.gradient {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, var(--colorBG), transparent);
+}
+
+.gradientTop {
+  top: var(--heightNavbarTotal);
+  height: var(--spaceAppPaddingTop);
+  background: linear-gradient(
+    to bottom,
+    // var(--colorBG) var(--space_cornerPlusedHeight),
+    var(--colorBG),
+    transparent
+  );
+}
+
+.gradientBottom {
+  bottom: 0;
+  height: var(--spaceAppPaddingBottom);
+}
+
+// corners
+
+.AppCorner {
+  fill: var(--colorBG) !important;
+  // fill: rgb(217 221 230) !important;
+  position: fixed;
+  background: transparent !important;
+  // border-radius
+  width: $borderRadius;
+}
+
+.AppCornerRightTop {
+  right: 0;
+  top: var(--heightNavbarTotal);
+  transform: rotate(90deg);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .AppCorner {
+    @include unvisible;
+  }
+  .center {
+    border-top-right-radius: 0;
+    box-shadow: none;
+  }
+}

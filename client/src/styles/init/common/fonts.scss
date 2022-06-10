@@ -1,0 +1,14 @@
+@import "styles/includes/common/fonts.scss";
+@import "styles/includes/variablesSCSS/sizes.scss";
+
+body #root {
+  font-family: $normalFontFamilies;
+  font-size: 120% !important;
+  font-weight: normal;
+}
+
+@media (max-width: #{$px480}) {
+  body #root {
+    font-size: 110% !important;
+  }
+}

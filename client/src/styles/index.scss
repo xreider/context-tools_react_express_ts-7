@@ -1,0 +1,12 @@
+// font-faces
+@import "src/styles/init/font-faces/OpenSans.scss";
+
+// init
+@import "src/styles/init/common/fonts.scss";
+@import "src/styles/init/common/resetCSS.scss";
+@import "src/styles/init/variablesCSS/sizes.scss";
+@import "src/styles/init/variablesCSS/speed.scss";
+
+// themes
+@import "src/styles/init/themes/index.scss";
+@import "src/styles/init/themes/colorsCollection.scss";

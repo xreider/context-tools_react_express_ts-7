@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "dev:client": "cd client & yarn dev",
+    "dev:server": "cd server & yarn dev",
+    "dev-all": "concurrently yarn:dev:*",
+    "build:client": "cd client & yarn build",
+    "build:server": "cd server & yarn build",
+    "build-all": "concurrently yarn:build:*",
+    "start:client": "cd client & yarn start",
+    "start:server": "cd server & yarn start",
+    "start-all": "concurrently yarn:start:*",
+    "inst:client": "cd client & yarn inst",
+    "inst:server": "cd server & yarn inst",
+    "inst-all": "yarn install && concurrently yarn:inst:*",
+    "update:client": "cd client & yarn update",
+    "update:server": "cd server & yarn update",
+    "update-all": "rimraf yarn.lock & rimraf yarn-error.log & rimraf node_modules & yarn upgrade-interactive & yarn install & concurrently yarn:update:*"
+  },
+  "dependencies": {
+    "concurrently": "^7.0.0",
+    "rimraf": "^3.0.2"
+  },
+  "name": "hsk-wiki.react_express_ts.3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}

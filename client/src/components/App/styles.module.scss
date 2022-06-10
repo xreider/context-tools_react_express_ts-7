@@ -1,0 +1,32 @@
+@import "styles/includes/variablesSCSS/sizes.scss";
+
+.App_wrapper {
+  min-height: 200vh;
+}
+
+body[data-device="desktop"] {
+  .App_wrapper {
+    padding-top: var(--spaceAppPaddingTop);
+    padding-bottom: var(--spaceAppPaddingBottom);
+  }
+  .content {
+    margin-top: var(--heightNavbarTotal);
+    margin-left: var(--spaceToScreenEdges);
+    margin-right: var(--spaceToScreenEdges);
+  }
+}
+
+.block {
+  box-shadow: var(--boxShadowBigForBigAreasOutsideBottom);
+  margin: 40px;
+  padding: var(--spacePaddingBlock);
+  border-radius: var(--borderRadiusBig);
+  max-width: var(--widthNavbarMax);
+  margin: auto;
+}
+
+@media (max-width: #{$widthNavbarMax + 300px}) {
+  .block {
+    max-width: unset;
+  }
+}

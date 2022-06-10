@@ -1,0 +1,202 @@
+@import "styles/includes/variablesSCSS/sizes.scss";
+
+.ABtn_wrapper {
+  // background-color: aquamarine;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 var(--space_normal);
+  transition: var(--speed_slow);
+}
+
+$spaceGrayHelper: calc(var(--space_normal) + var(--space_smallest));
+body[data-device="desktop"] {
+  .behaviour_none {
+    cursor: default;
+  }
+  .ABtn_wrapper {
+    &.behaviour_simpleMask {
+      &:hover {
+        background-color: var(--colorHoverMask);
+        &:not(:active) {
+          .ABtn_container {
+            transform: translate3d(0, -1px, 0);
+          }
+        }
+        &:active {
+          .ABtn_container {
+            transform: translate3d(0, 1px, 0);
+          }
+        }
+      }
+    }
+    &.behaviour_neumorphicHiddenOnCalm {
+      border-radius: var(--borderRadiusMedium);
+      box-shadow: var(--neumorphicShadowTransparent);
+      &:hover:not(:active) {
+        box-shadow: var(--neumorphicShadowShown);
+      }
+      &:active {
+        box-shadow: var(--neumorphicShadowActive);
+      }
+      &:hover:active {
+        transition-timing-function: cubic-bezier(0, 1, 0, 1);
+        transition: var(--speed_veryQuick);
+      }
+    }
+  }
+
+  .ABtn_wrapper.activeNav {
+    position: relative;
+    background-color: #edeef0;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    // box-shadow: var(--colorShadowDark) 0px 4px 2px -2px inset,
+    //   var(--colorShadowDark) 0px 0px 2px -2px inset,
+    //   var(--colorShadowDark) 0px 2px 2px -1px inset !important;
+    box-shadow: var(--colorShadowDark) 0px 4px 2px -2px inset,
+      var(--colorShadowDark) 4px 0px 2px -2px inset,
+      var(--colorShadowDark) -4px 0px 2px -2px inset !important;
+    .activeNavElements {
+      position: absolute;
+      background-color: #edeef0;
+      left: calc(-1 * var(--space_normal));
+      bottom: calc(-1 * $spaceGrayHelper);
+      width: calc(100% + var(--space_normal) * 2);
+      height: $spaceGrayHelper;
+
+      .activeNavCorners {
+        position: absolute;
+        width: calc(var(--space_normal) + var(--space_cornerPlusedHeight));
+        height: calc(var(--space_normal) + var(--space_cornerPlusedHeight));
+        background-color: #edeef0;
+        overflow: hidden;
+        z-index: 9;
+        &::after {
+          content: "";
+          position: absolute;
+          background-color: var(--colorBG);
+          border-radius: 50px;
+          left: calc(-1 * var(--space_normal));
+          top: calc(-1 * var(--space_normal));
+          width: calc(2 * var(--space_normal));
+          height: calc(2 * var(--space_normal));
+          box-shadow: 2px 1px 2px rgb(224, 224, 224);
+          box-shadow: var(--colorShadowDark) 0px 0px 1px 0px,
+            var(--colorShadowDark) 2px 1px 4px;
+          box-shadow: var(--colorShadowDark) 0px 0px 4px,
+            var(--colorShadowDark) 0px 0px 2px 0px,
+            var(--colorShadowDark) 0px 2px 2px 1px;
+          box-shadow: var(--colorShadowDark) 0px 2px 4px,
+            var(--colorShadowDark) 2px 0px 2px;
+        }
+      }
+      .activeNavRightCorner {
+        right: 0;
+        transform: rotate(90deg);
+        &::after {
+          box-shadow: var(--colorShadowDark) 0px -2px 4px,
+            var(--colorShadowDark) 0px 0px 2px 0px,
+            var(--colorShadowDark) 2px 1px 2px;
+          box-shadow: var(--colorShadowDark) 0px 2px 4px,
+            var(--colorShadowDark) 2px 0px 4px;
+        }
+      }
+    }
+  }
+
+  // .ABtn_wrapper.activeNav {
+  //   position: relative;
+  //   background-color: #edeef0;
+  //   border-bottom-left-radius: 0 !important;
+  //   border-bottom-right-radius: 0 !important;
+  //   box-shadow: #edeef0 0px -2px 4px inset,
+  //     rgba(99, 99, 99, 0.2) 0px 0px 2px 0px inset,
+  //     rgba(99, 99, 99, 0.1) 0px 2px 2px 1px inset !important;
+  //   &::after {
+  //     $spaceGrayHelper: calc(var(--space_normal) + var(--space_smallest));
+  //     content: "";
+  //     position: absolute;
+  //     left: calc(-1 * var(--space_normal));
+  //     bottom: calc(-1 * $spaceGrayHelper);
+  //     width: calc(100% + var(--space_normal) * 2);
+  //     height: $spaceGrayHelper;
+  //     background: #edeef0;
+
+  //     // box-shadow: #edeef0 0px 1px 2px;
+  //   }
+
+  //   // .activeNavCorners {
+  //   //   position: absolute;
+  //   //   width: var(--space_normal);
+  //   //   height: var(--space_normal) !important;
+  //   //   min-height: unset !important;
+  //   //   min-width: unset;
+  //   //   // background: var(--colorBG);
+  //   //   bottom: calc(-1 * var(--space_normal));
+  //   //   display: flex;
+  //   //   z-index: 11;
+  //   //   fill: var(--colorBG);
+
+  //   //   filter: drop-shadow(-1px -1px 2px rgb(0 0 0 / 10%));
+
+  //   //   &::after {
+  //   //     content: "";
+  //   //     background-color: red;
+  //   //     width: var(--space_normal);
+  //   //     height: var(--space_normal);
+  //   //   }
+  //   // }
+  //   // .activeNavLeftCorner {
+  //   //   left: calc(-1 * var(--space_normal));
+  //   //   transform: rotate(180deg);
+  //   //   // box-shadow: ;
+  //   // }
+  //   // .activeNavRightCorner {
+  //   //   right: calc(-1 * var(--space_normal));
+  //   //   transform: rotate(270deg);
+  //   // }
+  // }
+}
+
+@media (max-width: $widthNavbarMax) {
+  body[data-device="desktop"] {
+    .ABtn_wrapper.activeNav {
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+      border-bottom-left-radius: var(--borderRadiusMedium) !important;
+      border-bottom-right-radius: var(--borderRadiusMedium) !important;
+      box-shadow: var(--colorShadowDark) 0px -4px 2px -2px inset,
+        var(--colorShadowDark) 4px 0px 2px -2px inset,
+        var(--colorShadowDark) -4px 0px 2px -2px inset !important;
+      .activeNavElements {
+        bottom: unset !important;
+        top: calc(-1 * $spaceGrayHelper) !important;
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+.ABtn_container {
+  transition: var(--speed_quick);
+  height: 100%;
+  z-index: 10;
+  overflow: visible;
+}
+
+.kind_glow,
+.kind_flex,
+.kind_outline,
+.kind_solid {
+  & {
+    padding: 0 var(--space_normal);
+  }
+  &,
+  .ABtn_container {
+    display: flex;
+    align-items: center;
+    gap: var(--space_small);
+    font-weight: 600;
+  }
+}

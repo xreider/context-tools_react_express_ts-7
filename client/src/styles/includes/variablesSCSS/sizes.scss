@@ -1,0 +1,29 @@
+// SCREEN WIDTHS
+
+$screenWidths: 1600, 1536, 1280, 1024, 960, 800, 640, 480, 400, 360, 320, 300,
+  280;
+
+$px1600: 1600px;
+$px1536: 1536px;
+$px1280: 1280px;
+$px1024: 1024px;
+$px960: 960px;
+$px800: 800px;
+$px640: 640px;
+$px480: 480px;
+$px400: 400px;
+$px360: 360px;
+$px320: 320px;
+$px300: 300px;
+$px280: 280px;
+
+$widthSmallContainer: 350px;
+$widthReadContainer: 607px;
+$widthTightScreen: 800px;
+$widthWidestContainer: 960px;
+$widthNavbarMax: 960px;
+
+// SPACES
+
+$spaces: "smallest", "verySmall", "small", "normal", "big", "biggest", "veryBig",
+  "veryBiggest", "toScreenEdges", "betweenBigBlocks";
