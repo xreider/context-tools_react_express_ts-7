@@ -24,12 +24,39 @@
     //   box-shadow: rgb(0 0 0 / 22%) 0px 4px 10px 1px;
     // }
   }
+  &.kind_simpleBorderIsAfter {
+    // border-bottom: 2px solid var(--colorBorderInactive);
+    // border-radius: 0;
+    // border-top-left-radius: var(--borderRadiusMedium);
+    // border-top-right-radius: var(--borderRadiusMedium);
+    position: relative;
+    $afterHeight: 2px;
+    padding-bottom: $afterHeight;
+    &::after {
+      content: "";
+      background: var(--colorBorderInactive);
+      position: absolute;
+      height: $afterHeight;
+      left: var(--space_normal);
+      border-radius: 50px;
+      width: calc(100% - var(--space_normal) * 2);
+      bottom: calc($afterHeight / -2);
+      transition: var(--speed_normal);
+    }
+  }
+  // &[class*="kind_simple"] {
+  //   background-color: red !important;
+  // }
   &.behaviour_neumorphicHiddenOnCalm {
     box-shadow: var(--neumorphicShadowTransparent);
     &:hover,
     &.focused {
       border-color: var(--colorBorderActive);
       box-shadow: var(--neumorphicShadowShown);
+
+      &.kind_simpleBorderIsAfter::after {
+        background: var(--colorBorderActive);
+      }
     }
   }
 }

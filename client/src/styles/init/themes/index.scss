@@ -72,7 +72,6 @@ $fields: readable, neutral, notice;
 @supports selector(::-webkit-scrollbar) {
   body[data-device="desktop"] {
     scrollbar-gutter: stable;
-    scroll-margin-top: 100px;
     &::-webkit-scrollbar {
       background-color: var(--colorBG);
       width: var(--space_veryBig);
@@ -100,6 +99,19 @@ $fields: readable, neutral, notice;
       &:active {
         background-color: var(--colorActive);
       }
+    }
+
+    &._refreshingWebkitScrollBar {
+      width: calc(100% - 0.1px);
+      // &::-webkit-scrollbar {
+      //   // background-color: red;
+      //   width: calc(var(--space_veryBig) + 0.5px);
+      // }
+      // &::-webkit-scrollbar-track {
+      //   margin-top: calc(
+      //     var(--heightNavbarTotal) - var(--scrollbarBodyBorder) - 0.5px
+      //   );
+      // }
     }
   }
 }

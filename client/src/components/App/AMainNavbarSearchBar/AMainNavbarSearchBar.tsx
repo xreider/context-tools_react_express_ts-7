@@ -1,15 +1,14 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, ComponentPropsWithoutRef, FC } from "react";
 import cn from "classnames";
 import st from "./styles.module.scss";
 import AInput from "components/elements/form/AInput/AInput";
 import { EAIcons } from "components/elements/AIcon/AIcon";
-import { EId } from "constants/common/EId";
 
 export interface PAMainNavbarSearchBar {
   // classNameWrapper?: string;
   // propsWrapper?: ComponentPropsWithoutRef<"div">;
   // classNameContainer?: string;
-  // propsContainer?: ComponentPropsWithoutRef<"div">;
+  propsContainer?: ComponentPropsWithoutRef<"div">;
 
   onSearchFormInputChangeCb?: (event: ChangeEvent<HTMLInputElement>) => void;
   // overflowed?: boolean;
@@ -19,7 +18,7 @@ const AMainNavbarSearchBar: FC<PAMainNavbarSearchBar> = ({
   // classNameWrapper,
   // propsWrapper,
   // classNameContainer,
-  // propsContainer,
+  propsContainer,
   onSearchFormInputChangeCb,
   // overflowed,
 }) => {
@@ -27,11 +26,12 @@ const AMainNavbarSearchBar: FC<PAMainNavbarSearchBar> = ({
     <AInput
       behaviour="neumorphicHiddenOnCalm"
       classNameContainer={cn(
-        st.AMainNavbarSearchBar_container
+        st.AMainNavbarSearchBar_container,
+        propsContainer?.className
         // overflowed && st.overflowed
         // focused && st.focused
       )}
-      kind="simple"
+      kind="simpleBorderIsAfter"
       propsInput={{
         placeholder: "Поиск",
       }}

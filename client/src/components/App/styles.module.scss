@@ -17,7 +17,7 @@ body[data-device="desktop"] {
 }
 
 .block {
-  box-shadow: var(--boxShadowBigForBigAreasOutsideBottom);
+  box-shadow: var(--smallShadowOutside);
   margin: 40px;
   padding: var(--spacePaddingBlock);
   border-radius: var(--borderRadiusBig);

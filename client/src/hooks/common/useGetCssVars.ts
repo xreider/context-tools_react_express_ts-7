@@ -8,9 +8,18 @@ export const useGetCssValueStr = (vars: string[]) => {
   return arr;
 };
 
-export const useGetCssValueNum = (vars: string[]) => {
+interface PropsUseGetCssValueNum {
+  enabled?: boolean;
+}
+
+export const useGetCssValueNum = (
+  variables: string[],
+  props: PropsUseGetCssValueNum = { enabled: true }
+) => {
+  if (!props.enabled) return [0];
+
   let arr: number[] = [];
-  vars.forEach((v) => {
+  variables.forEach((v) => {
     // console.log(vars, getCssValue(v));
     arr.push(getNumberFromString(getCssValue(v)));
   });

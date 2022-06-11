@@ -31,7 +31,7 @@ export interface PAInput {
   // others
   behaviour?: "neumorphicHiddenOnCalm";
   eraseEnabled?: boolean;
-  kind?: "simple";
+  kind?: "simple" | "simpleBorderIsAfter";
 
   // callbacks
   onBlurCb?: (event: FocusEvent<HTMLDivElement, Element>) => void;

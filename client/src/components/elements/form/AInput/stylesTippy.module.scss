@@ -58,15 +58,15 @@
   width: calc(2 * var(--space_normal));
   height: calc(2 * var(--space_normal));
   border-radius: 50%;
-  box-shadow: 2px 2px 4px var(--colorShadowLight) inset;
+  box-shadow: 2px 2px 4px var(--colorShadowLightMedium) inset;
   z-index: 1;
 }
 
 .ANavbarSearchInputTippy_beamRightCornerCircle {
   left: unset;
   right: calc(-1 * var(--space_normal));
-  box-shadow: -2px -2px 8px var(--colorShadowLight) inset,
-    2px 2px 4px var(--colorShadowDark) inset;
+  box-shadow: -2px -2px 8px var(--colorShadowLightMedium) inset,
+    2px 2px 4px var(--colorShadowDarkSlightly) inset;
 }
 
 .ANavbarSearchInputTippy_beamContainer {

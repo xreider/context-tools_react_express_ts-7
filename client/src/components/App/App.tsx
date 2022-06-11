@@ -6,17 +6,27 @@ import AMainNavbar from "./AMainNavbar/AMainNavbar";
 import { EFieldColorCN } from "constants/common/colors";
 import useInitDevice from "hooks/init/useInitDevice";
 import AppOrnament from "./AppOrnament";
+import useRefreshWebktiScrollbar from "./useRefreshWebktiScrollbar";
+
+import { EClass } from "constants/common/EClass";
 
 export interface PApp {}
 
 const App: FC<PApp> = () => {
   useInitDevice();
+  useRefreshWebktiScrollbar();
   return (
     <div className={cn(EFieldColorCN.neutral, st.App_wrapper)}>
       <AMainNavbar propsWrapper={{ className: stOrnament.AppNavbar_wrapper }} />
       <AppOrnament />
-      <div className={st.content}>
-        <div className={cn(st.block, EFieldColorCN.readable)}>
+      <div className={cn(st.content)}>
+        <div
+          className={cn(
+            st.block,
+            EClass.ContentWithSideMenu,
+            EFieldColorCN.readable
+          )}
+        >
           Почему он используется? Давно выяснено, что при оценке дизайна и
           композиции читаемый текст мешает сосредоточиться. Lorem Ipsum
           используют потому, что тот обеспечивает более или менее стандартное

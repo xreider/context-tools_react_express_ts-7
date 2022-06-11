@@ -37,9 +37,10 @@
   --colorSVG_error: #ff566c;
   --colorSVG_font: var(--colorFont);
 
-  --colorShadowLight: #ffffff;
-  --colorShadowDark: #e9ebec;
-  --colorShadowDark: #e9ebf1;
+  --colorShadowLightMedium: #edf3f7;
+  --colorShadowDarkSlightly: #e9ebec;
+  --colorShadowDarkSlightly: #e9ebf1;
+  --colorShadowDarkMedium: #e0e7eb;
 
   $color: #9fa7af;
   --scrollbarTrackStaticColor: #d5d9df;
@@ -47,33 +48,29 @@
   --scrollbarThumbHoverColor: #{$color};
   --scrollbarThumbActiveColor: #{$color};
 
-  --boxShadowBigForBigAreasInset: #{boxShadowBigForBigAreas(inset, bottom)};
-  --boxShadowBigForBigAreasOutsideBottom: #{boxShadowBigForBigAreas(
-      outside,
-      bottom
-    )};
-  --boxShadowSmallForBigAreasOutsideTop: #{boxShadowBigForBigAreas(outside, top)};
-
   --neumorphicShadowTransparent: 0 0 0 transparent, 0 0 0 transparent;
-  --neumorphicShadowShown: 4px 4px 8px var(--colorShadowDark),
-    -4px -4px 8px var(--colorShadowLight);
-  --neumorphicShadowActive: 1px 1px 4px var(--colorShadowDark),
-    -1px -1px 4px var(--colorShadowLight);
+  --neumorphicShadowShown: 4px 4px 8px var(--colorShadowDarkMedium),
+    -4px -4px 8px var(--colorShadowLightMedium);
+  --neumorphicShadowActive: 1px 1px 4px var(--colorShadowDarkMedium),
+    -1px -1px 4px var(--colorShadowLightMedium);
+
+  --smallShadowOutside: var(--colorShadowDarkSlightly) 0px 0px 0px 1px;
+  --smallShadowInside: var(--colorShadowDarkSlightly) 0px 0px 0px 1px inset;
 }
 
-@function boxShadowBigForBigAreas($insetOrOutside, $topOrBottom) {
-  $side: inset;
-  @if $insetOrOutside == outside {
-    $side: "";
-  }
+// @function boxShadowBigForBigAreas($insetOrOutside, $topOrBottom) {
+//   $side: inset;
+//   @if $insetOrOutside == outside {
+//     $side: "";
+//   }
 
-  $dir: 2px;
-  @if $topOrBottom == top {
-    $dir: -2px;
-  }
+//   $dir: 2px;
+//   @if $topOrBottom == top {
+//     $dir: -2px;
+//   }
 
-  // @return var(--colorShadowDark) 0px 0px 2px 0px #{$side},
-  //   var(--colorShadowDark) 0px #{$dir} 4px #{$side};
-  @return var(--colorShadowDark) 0px 0px 1px 1px #{$side},
-    var(--colorShadowDark) 0px 1px 2px 0px #{$side};
-}
+//   // @return var(--colorShadowDarkSlightly) 0px 0px 2px 0px #{$side},
+//   //   var(--colorShadowDarkSlightly) 0px #{$dir} 4px #{$side};
+//   @return var(--colorShadowDarkSlightly) 0px 0px 1px 1px #{$side},
+//     var(--colorShadowDarkSlightly) 0px 1px 2px 0px #{$side};
+// }

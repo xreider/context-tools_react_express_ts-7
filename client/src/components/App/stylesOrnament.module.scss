@@ -19,7 +19,7 @@ $borderRadius: var(--borderRadiusVeryBig);
   height: calc(100% - var(--heightNavbarTotal));
   z-index: 10;
   border-top-right-radius: $borderRadius;
-  box-shadow: var(--boxShadowBigForBigAreasInset);
+  box-shadow: var(--smallShadowInside);
   z-index: 9;
 }
 

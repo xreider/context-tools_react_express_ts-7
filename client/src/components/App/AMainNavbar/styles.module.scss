@@ -48,6 +48,9 @@ body[data-device="desktop"] {
         [data-name="topPart"] {
           fill: var(--colorSVG_active);
         }
+        // [data-name="bottomPart"] {
+        //   fill: var(--colorSVG_active);
+        // }
         [data-name="bottomPart"] {
           fill: var(--colorSecondBrandColor);
         }
@@ -104,7 +107,7 @@ $gap: var(--space_normal);
   }
 }
 
-.AMainNavbar_item {
+.AMainNavbarItem {
   text-transform: uppercase;
   align-items: center;
   justify-content: center;
@@ -118,6 +121,31 @@ body[data-device="desktop"] {
   .AMainNavbar_wrapper {
     top: 0;
   }
+
+  .AMainNavbar_container {
+    &:first-of-type {
+      // .AMainNavbarItem {
+      // }
+      .AMainNavbarStyleItem {
+        margin-top: calc(-2 * var(--space_normal));
+        height: calc(var(--heightNavbarPanel) + 2 * var(--space_normal));
+        & > * {
+          margin-top: calc(2 * var(--space_normal));
+        }
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: var(--borderRadiusMedium);
+        border-bottom-right-radius: var(--borderRadiusMedium);
+      }
+      .activeItem {
+        $borderWidth: 1px;
+        background-color: var(--globalFieldNeutralBG);
+        box-shadow: none !important;
+        border: $borderWidth solid var(--colorShadowDarkSlightly);
+        border-top: 0;
+      }
+    }
+  }
 }
 
 body[data-device="phone"] {
@@ -128,14 +156,7 @@ body[data-device="phone"] {
 }
 
 @supports not selector(::-webkit-scrollbar) {
-  body[data-device="desktop"] {
-    .AMainNavbar_wrapper {
-      box-shadow: var(--boxShadowBigForBigAreasOutsideBottom);
-    }
-  }
-  body[data-device="phone"] {
-    .AMainNavbar_wrapper {
-      box-shadow: var(--boxShadowBigForBigAreasOutsideTop);
-    }
+  .AMainNavbar_wrapper {
+    box-shadow: var(--smallShadowOutside);
   }
 }

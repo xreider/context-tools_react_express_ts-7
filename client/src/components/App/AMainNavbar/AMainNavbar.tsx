@@ -11,10 +11,10 @@ import ABtn from "components/elements/ABtn/ABtn";
 import { EAIcons } from "components/elements/AIcon/AIcon";
 import { EFieldColorCN } from "constants/common/colors";
 import AMainNavbarSearchBar from "../AMainNavbarSearchBar/AMainNavbarSearchBar";
-import { EId } from "constants/common/EId";
 import useCustomWindowInnerSize from "hooks/common/useCustomWindowInnerSize";
 import { useGetCssValueNum } from "hooks/common/useGetCssVars";
 import { ECssSizeTitle } from "constants/common/cssTitles";
+import { EClass } from "constants/common/EClass";
 
 export interface PAMainNavbar {
   propsWrapper?: ComponentPropsWithoutRef<"div">;
@@ -35,21 +35,21 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
       className={cn(
         EFieldColorCN.readable,
         st.AMainNavbar_wrapper,
+        EClass.ANavbarWrapper,
         propsWrapper?.className
       )}
     >
-      <div
-        className={cn(st.AMainNavbar_container, propsContainer?.className)}
-        id={EId.ANavbarContainer}
-      >
+      <div className={cn(st.AMainNavbar_container, propsContainer?.className)}>
         <ABtn
-          activeNav
+          active
+          activeClassName={st.activeItem}
           behaviour="neumorphicHiddenOnCalm"
           kind="flex"
           propsWrapper={{
             className: cn(
               st.logo,
-              st.AMainNavbar_item,
+              st.AMainNavbarItem,
+              st.AMainNavbarStyleItem,
               twoSliceMode && st.twoSliceMode
             ),
           }}
@@ -59,25 +59,36 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
               : [{ icon: EAIcons.logoWide }]
           }
         />
-        {!twoSliceMode && <AMainNavbarSearchBar />}
+        {!twoSliceMode && (
+          <AMainNavbarSearchBar
+            propsContainer={{ className: st.AMainNavbarStyleItem }}
+          />
+        )}
         {twoSliceMode && width >= 400 && <div className={cn(st.filler)} />}
         <ABtn
           behaviour="neumorphicHiddenOnCalm"
           kind="flex"
-          propsWrapper={{ className: cn(st.AMainNavbar_item) }}
+          propsWrapper={{
+            className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
+          }}
           elements={[{ text: "10" }, { icon: EAIcons.comment }]}
         />
         <ABtn
           behaviour="neumorphicHiddenOnCalm"
           kind="flex"
-          propsWrapper={{ className: cn(st.AMainNavbar_item) }}
+          propsWrapper={{
+            className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
+          }}
           elements={[{ text: "5" }, { icon: EAIcons.bell }]}
         />
         <ABtn
           behaviour="neumorphicHiddenOnCalm"
           kind="flex"
-          propsWrapper={{ className: cn(st.AMainNavbar_item) }}
+          propsWrapper={{
+            className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
+          }}
           elements={[{ icon: EAIcons.menu }]}
+          menuProps={{ children: "Menu", mode: "modal" }}
         />
       </div>
       {twoSliceMode && (
