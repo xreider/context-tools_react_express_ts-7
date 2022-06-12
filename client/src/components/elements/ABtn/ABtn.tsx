@@ -1,30 +1,12 @@
-import {
-  ComponentPropsWithoutRef,
-  FC,
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ComponentPropsWithoutRef, FC, ReactElement, ReactNode } from "react";
 import cn from "classnames";
 import st from "./styles.module.scss";
 import AIcon, { EAIcons, PAIcon } from "../AIcon/AIcon";
 
-import { ReactComponent as CornerOutside } from "public/img/elements/cornerOutside.svg";
-import {
-  arrow,
-  flip,
-  offset,
-  Placement,
-  shift,
-  size,
-  useFloating,
-} from "@floating-ui/react-dom-interactions";
-import useCustomWindowInnerSize from "hooks/common/useCustomWindowInnerSize";
-import { useGetCssValueNum } from "hooks/common/useGetCssVars";
-import { ECssSizeTitle } from "constants/common/cssTitles";
-import { EClass } from "constants/common/EClass";
+// import { ReactComponent as CornerOutside } from "public/img/elements/cornerOutside.svg";
+import { Placement } from "@floating-ui/react-dom-interactions";
+
+import useMenu from "./useMenu";
 
 export interface PABtnKid extends ComponentPropsWithoutRef<"div"> {
   text?: ReactElement | string;
@@ -55,71 +37,21 @@ const ABtn: FC<PABtn> = ({
   propsContainer,
   propsWrapper,
 }) => {
-  const arrowRef = useRef(null);
-
-  const { width } = useCustomWindowInnerSize();
-  const [open, setOpen] = useState(false);
-
-  const hasMenu = !!(
-    typeof menuProps !== "undefined" && !!Object.keys(menuProps)?.length
-  );
-
-  const [spaceToScreenEdges] = useGetCssValueNum(
-    [ECssSizeTitle.spaceToScreenEdges],
-    { enabled: hasMenu }
-  );
-  // console.log("spaceToScreenEdges", spaceToScreenEdges);
-
-  useEffect(() => {
-    update();
-  }, [width]);
-
   const {
-    update,
-    reference,
+    arrowCallback,
+    arrowStyle,
+    arrowX,
+    arrowY,
     floating,
+    hasMenu,
+    menuOpened,
+    menuRightRadius,
+    menuX,
+    menuY,
+    reference,
+    setMenuOpened,
     strategy,
-    x,
-    y,
-    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
-  } = useFloating({
-    // strategy: "fixed",
-    open,
-    onOpenChange: setOpen,
-    placement: menuProps?.placement || "bottom",
-    middleware: [
-      offset(spaceToScreenEdges),
-      shift({ padding: spaceToScreenEdges }),
-      {
-        name: "modalMode",
-        fn({ x, y, rects, ...args }) {
-          if (!hasMenu || menuProps.mode !== "modal") return { x, y };
-          const content = document.querySelector(
-            `.${EClass.ContentWithSideMenu}`
-          );
-          const navbar = document.querySelector(`.${EClass.ANavbarWrapper}`);
-
-          if (!content || !navbar) {
-            console.error("No content or ANavbarWrapper");
-            console.error("content: ", content);
-            console.error("ANavbarWrapper: ", navbar);
-            return { x, y };
-          }
-
-          const contentRect = content.getBoundingClientRect();
-          const navbarRect = navbar.getBoundingClientRect();
-          console.log("contentRect", contentRect);
-          console.log("args", args);
-          console.log("rects", rects);
-          return {
-            x: contentRect.left + contentRect.width - rects.floating.width,
-            y: navbarRect.height + spaceToScreenEdges,
-          };
-        },
-      },
-      arrow({ element: arrowRef }),
-    ],
-  });
+  } = useMenu({ menuProps });
 
   return (
     <>
@@ -130,14 +62,15 @@ const ABtn: FC<PABtn> = ({
           st.ABtn_wrapper,
           behaviour && st[`behaviour_${behaviour}`],
           kind && st[`kind_${kind}`],
-          open && st.hovered,
+          menuOpened && st.hovered,
+          menuOpened && st.menuOpened,
           active && st.active,
           active && activeClassName,
           propsWrapper?.className
         )}
         onClick={(event) => {
           if (hasMenu) {
-            setOpen((state) => !state);
+            setMenuOpened?.((state) => !state);
           }
         }}
       >
@@ -180,29 +113,38 @@ const ABtn: FC<PABtn> = ({
             })}
         </div>
       </button>
-      {hasMenu && open && (
+      {hasMenu && menuOpened && (
         <div
           ref={floating}
           style={{
             position: strategy,
-            top: y ?? 0,
-            left: x ?? 0,
+            top: menuY ?? 0,
+            left: menuX ?? 0,
           }}
-          className={st.menu}
+          className={cn(
+            st.menu,
+            !menuRightRadius && st.menuRightRadiusDisabled
+          )}
           onClick={(event) => {
             event.stopPropagation();
             event.preventDefault();
           }}
         >
-          My tooltip
+          {menuProps?.children}
           <div
-            ref={arrowRef}
+            ref={arrowCallback}
             style={{
               top: arrowY ?? 0,
               left: arrowX ?? 0,
+              ...arrowStyle,
             }}
             className={st.arrow}
-          />
+          >
+            <div className={st.arrowBeam}>
+              <div className={st.arrowBeamLeftEdge} />
+              <div className={st.arrowBeamRightEdge} />
+            </div>
+          </div>
         </div>
       )}
     </>

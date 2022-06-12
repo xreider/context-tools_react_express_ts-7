@@ -1,10 +1,4 @@
-import {
-  ChangeEventHandler,
-  ComponentPropsWithoutRef,
-  FC,
-  useMemo,
-  useState,
-} from "react";
+import { ComponentPropsWithoutRef, FC, useMemo } from "react";
 import cn from "classnames";
 import st from "./styles.module.scss";
 import ABtn from "components/elements/ABtn/ABtn";
@@ -23,7 +17,7 @@ export interface PAMainNavbar {
 
 const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
   // const [overflowed, setOverflowed] = useState(false);
-  const { width } = useCustomWindowInnerSize();
+  const { width } = useCustomWindowInnerSize({});
   const [widthNavbarMax] = useGetCssValueNum([ECssSizeTitle.widthNavbarMax]);
   const twoSliceMode = useMemo(
     () => width < widthNavbarMax,
@@ -72,6 +66,7 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
             className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
           }}
           elements={[{ text: "10" }, { icon: EAIcons.comment }]}
+          menuProps={{ children: "Comments", mode: "modal" }}
         />
         <ABtn
           behaviour="neumorphicHiddenOnCalm"
@@ -80,6 +75,7 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
             className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
           }}
           elements={[{ text: "5" }, { icon: EAIcons.bell }]}
+          menuProps={{ children: "Notifications", mode: "modal" }}
         />
         <ABtn
           behaviour="neumorphicHiddenOnCalm"

@@ -2,11 +2,20 @@ import { useLayoutEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import { ESpeed } from "constants/common";
 
-function useCustomWindowInnerSize(delay = ESpeed.debounceDelay) {
-  const [width, setWidth] = useState(window.innerWidth);
-  const [height, setHeight] = useState(window.innerHeight);
+interface PCustomWindowInnerSize {
+  delay?: ESpeed;
+  enabled?: boolean;
+}
+
+function useCustomWindowInnerSize({
+  delay = ESpeed.debounceDelay,
+  enabled = true,
+}: PCustomWindowInnerSize) {
+  const [width, setWidth] = useState(enabled ? window.innerWidth : 0);
+  const [height, setHeight] = useState(enabled ? window.innerHeight : 0);
 
   useLayoutEffect(() => {
+    if (!enabled) return;
     const handleResize = () => {
       setWidth(window.innerWidth);
       setHeight(window.innerHeight);
@@ -16,8 +25,9 @@ function useCustomWindowInnerSize(delay = ESpeed.debounceDelay) {
     return () => {
       window.removeEventListener("resize", debouncedHandleResize);
     };
-  }, [delay]);
+  }, [delay, enabled]);
 
+  if (!enabled) return { width: 0, height: 0 };
   return { width, height };
 }
 

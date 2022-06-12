@@ -127,10 +127,10 @@ body[data-device="desktop"] {
       // .AMainNavbarItem {
       // }
       .AMainNavbarStyleItem {
-        margin-top: calc(-2 * var(--space_normal));
-        height: calc(var(--heightNavbarPanel) + 2 * var(--space_normal));
+        margin-top: calc(-1 * var(--space_normal));
+        height: calc(var(--heightNavbarPanel) + 1 * var(--space_normal));
         & > * {
-          margin-top: calc(2 * var(--space_normal));
+          margin-top: calc(1 * var(--space_normal));
         }
         border-top-left-radius: 0;
         border-top-right-radius: 0;
