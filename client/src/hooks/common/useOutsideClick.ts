@@ -8,14 +8,17 @@ export const useOutsideClick = (
 ) => {
   useEffect(() => {
     if (!enabled) return;
+
     function handleClickOutside(event: Event) {
       if (
         refs.every((el) => el.current && !el.current?.contains?.(event?.target))
       ) {
+        console.log("handleClickOutside");
         document.removeEventListener("click", handleClickOutside);
         cb();
       }
     }
+
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);

@@ -16,12 +16,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { PABtn } from "./ABtn";
+import { IMenuProps } from "./TypesAFloatingMenu";
 
-interface PUseMenu {
-  menuProps: PABtn["menuProps"];
-  // arrowRef: MutableRefObject<null | HTMLDivElement>;
-}
+interface PUseMenu extends IMenuProps {}
 
 export default function useMenu({ menuProps }: PUseMenu) {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -113,31 +110,31 @@ export default function useMenu({ menuProps }: PUseMenu) {
         name: "arrowInModalMode",
         fn({ x: menuX, y: menuY, ...args }) {
           if (!hasMenu) return { x: menuX, y: menuY };
-          const { rects, elements } = args;
-          console.log(args);
+          // const { rects, elements } = args;
+          // console.log(args);
 
-          console.log(
-            "elements.reference.getBoundingClientRect()",
-            elements.reference.getBoundingClientRect()
-          );
+          // console.log(
+          //   "elements.reference.getBoundingClientRect()",
+          //   elements.reference.getBoundingClientRect()
+          // );
 
-          const heightBetweenRefAndFloating =
-            menuY - rects.reference.height + rects.reference.y;
-          console.log(
-            "heightBetweenRefAndFloating",
-            heightBetweenRefAndFloating
-          );
+          // const heightBetweenRefAndFloating =
+          //   menuY - rects.reference.height + rects.reference.y;
+          // console.log(
+          //   "heightBetweenRefAndFloating",
+          //   heightBetweenRefAndFloating
+          // );
 
-          const left = rects.reference.x;
-          console.log(rects.reference.x, rects.floating.width, menuX);
+          // const left = rects.reference.x;
+          // console.log(rects.reference.x, rects.floating.width, menuX);
 
-          setArrowStyle({
-            position: "fixed",
-            top: rects.reference.y + rects.reference.height,
-            left: left,
-            height: heightBetweenRefAndFloating,
-            width: rects.reference.width,
-          });
+          // setArrowStyle({
+          //   position: "fixed",
+          //   top: rects.reference.y + rects.reference.height,
+          //   left: left,
+          //   height: heightBetweenRefAndFloating,
+          //   width: rects.reference.width,
+          // });
 
           return {
             x: menuX,

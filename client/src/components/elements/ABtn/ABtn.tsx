@@ -4,25 +4,21 @@ import st from "./styles.module.scss";
 import AIcon, { EAIcons, PAIcon } from "../AIcon/AIcon";
 
 // import { ReactComponent as CornerOutside } from "public/img/elements/cornerOutside.svg";
-import { Placement } from "@floating-ui/react-dom-interactions";
 
-import useMenu from "./useMenu";
+import useMenu from "../AFloatingMenu/useMenu";
+import AFloatingMenu from "../AFloatingMenu/AFloatingMenu";
+import { IMenuProps } from "../AFloatingMenu/TypesAFloatingMenu";
 
 export interface PABtnKid extends ComponentPropsWithoutRef<"div"> {
   text?: ReactElement | string;
 }
 
-export interface PABtn {
+export interface PABtn extends IMenuProps {
   active?: boolean;
   activeClassName?: string;
   behaviour?: "neumorphicHiddenOnCalm" | "simpleMask" | "none";
   elements?: (PABtnKid | PAIcon)[];
   kind?: "glow" | "solid" | "outline" | "flex";
-  menuProps?: {
-    children?: ReactNode;
-    mode?: "modal";
-    placement?: Placement;
-  };
   propsContainer?: ComponentPropsWithoutRef<"div">;
   propsWrapper?: ComponentPropsWithoutRef<"button">;
 }
@@ -38,19 +34,20 @@ const ABtn: FC<PABtn> = ({
   propsWrapper,
 }) => {
   const {
-    arrowCallback,
-    arrowStyle,
-    arrowX,
-    arrowY,
-    floating,
     hasMenu,
     menuOpened,
-    menuRightRadius,
-    menuX,
-    menuY,
     reference,
     setMenuOpened,
-    strategy,
+    ...floatingProps
+    // arrowCallback,
+    // arrowStyle,
+    // arrowX,
+    // arrowY,
+    // floating,
+    // menuRightRadius,
+    // menuX,
+    // menuY,
+    // strategy,
   } = useMenu({ menuProps });
 
   return (
@@ -114,38 +111,7 @@ const ABtn: FC<PABtn> = ({
         </div>
       </button>
       {hasMenu && menuOpened && (
-        <div
-          ref={floating}
-          style={{
-            position: strategy,
-            top: menuY ?? 0,
-            left: menuX ?? 0,
-          }}
-          className={cn(
-            st.menu,
-            !menuRightRadius && st.menuRightRadiusDisabled
-          )}
-          onClick={(event) => {
-            event.stopPropagation();
-            event.preventDefault();
-          }}
-        >
-          {menuProps?.children}
-          <div
-            ref={arrowCallback}
-            style={{
-              top: arrowY ?? 0,
-              left: arrowX ?? 0,
-              ...arrowStyle,
-            }}
-            className={st.arrow}
-          >
-            <div className={st.arrowBeam}>
-              <div className={st.arrowBeamLeftEdge} />
-              <div className={st.arrowBeamRightEdge} />
-            </div>
-          </div>
-        </div>
+        <AFloatingMenu {...floatingProps} menuProps={menuProps} />
       )}
     </>
   );
