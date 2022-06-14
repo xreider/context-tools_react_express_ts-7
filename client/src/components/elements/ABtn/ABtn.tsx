@@ -5,15 +5,15 @@ import AIcon, { EAIcons, PAIcon } from "../AIcon/AIcon";
 
 // import { ReactComponent as CornerOutside } from "public/img/elements/cornerOutside.svg";
 
-import useMenu from "../AFloatingMenu/useMenu";
+import useAFloating from "../AFloatingMenu/useAFloating";
 import AFloatingMenu from "../AFloatingMenu/AFloatingMenu";
-import { IMenuProps } from "../AFloatingMenu/TypesAFloatingMenu";
+import { IFloatingProps } from "../AFloatingMenu/TypesAFloatingMenu";
 
 export interface PABtnKid extends ComponentPropsWithoutRef<"div"> {
   text?: ReactElement | string;
 }
 
-export interface PABtn extends IMenuProps {
+export interface PABtn extends IFloatingProps {
   active?: boolean;
   activeClassName?: string;
   behaviour?: "neumorphicHiddenOnCalm" | "simpleMask" | "none";
@@ -29,16 +29,16 @@ const ABtn: FC<PABtn> = ({
   behaviour,
   elements,
   kind,
-  menuProps,
+  floatingProps,
   propsContainer,
   propsWrapper,
 }) => {
   const {
     hasMenu,
-    menuOpened,
+    floatingOpened,
     reference,
-    setMenuOpened,
-    ...floatingProps
+    setFloatingOpened,
+    ...otherFloatingProps
     // arrowCallback,
     // arrowStyle,
     // arrowX,
@@ -48,7 +48,10 @@ const ABtn: FC<PABtn> = ({
     // menuX,
     // menuY,
     // strategy,
-  } = useMenu({ menuProps });
+  } = useAFloating({ floatingProps });
+
+  const { floatingDisappearing, setFloatingDisappearing } = otherFloatingProps; // sharable with floating
+  // console.log(floatingDisappearing);
 
   return (
     <>
@@ -59,15 +62,18 @@ const ABtn: FC<PABtn> = ({
           st.ABtn_wrapper,
           behaviour && st[`behaviour_${behaviour}`],
           kind && st[`kind_${kind}`],
-          menuOpened && st.hovered,
-          menuOpened && st.menuOpened,
+          !floatingDisappearing && floatingOpened && st.hovered,
           active && st.active,
           active && activeClassName,
           propsWrapper?.className
         )}
         onClick={(event) => {
           if (hasMenu) {
-            setMenuOpened?.((state) => !state);
+            if (!floatingDisappearing && !floatingOpened) {
+              setFloatingOpened(true);
+            } else {
+              setFloatingDisappearing?.((state) => !state);
+            }
           }
         }}
       >
@@ -110,8 +116,8 @@ const ABtn: FC<PABtn> = ({
             })}
         </div>
       </button>
-      {hasMenu && menuOpened && (
-        <AFloatingMenu {...floatingProps} menuProps={menuProps} />
+      {hasMenu && floatingOpened && (
+        <AFloatingMenu {...otherFloatingProps} floatingProps={floatingProps} />
       )}
     </>
   );

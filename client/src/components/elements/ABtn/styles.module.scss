@@ -44,9 +44,9 @@ body[data-device="desktop"] {
         transition-timing-function: cubic-bezier(0, 1, 0, 1);
         transition: var(--speed_veryQuick);
       }
-      &.menuOpened {
-        border-radius: 0;
-      }
+      // &.floatingOpened {
+      //   border-radius: 0;
+      // }
     }
   }
 }

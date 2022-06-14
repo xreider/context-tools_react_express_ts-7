@@ -1,7 +1,8 @@
 .AMainNavbarSearchBar_container {
   // margin: 0 var(--space_normal);
   flex: 1;
-
+  --colorSVG_inactive: var(--colorSVG_normal);
+  --colorBorderInactive: var(--colorSVG_normal);
   // max-width: 450px;
 }
 

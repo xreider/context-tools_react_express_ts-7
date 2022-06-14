@@ -9,6 +9,7 @@ import useCustomWindowInnerSize from "hooks/common/useCustomWindowInnerSize";
 import { useGetCssValueNum } from "hooks/common/useGetCssVars";
 import { ECssSizeTitle } from "constants/common/cssTitles";
 import { EClass } from "constants/common/EClass";
+import { EFloatingMode } from "components/elements/AFloatingMenu/TypesAFloatingMenu";
 
 export interface PAMainNavbar {
   propsWrapper?: ComponentPropsWithoutRef<"div">;
@@ -18,7 +19,7 @@ export interface PAMainNavbar {
 const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
   // const [overflowed, setOverflowed] = useState(false);
   const { width } = useCustomWindowInnerSize({});
-  const [widthNavbarMax] = useGetCssValueNum([ECssSizeTitle.widthNavbarMax]);
+  const [widthNavbarMax] = useGetCssValueNum([ECssSizeTitle.WidthNavbarMax]);
   const twoSliceMode = useMemo(
     () => width < widthNavbarMax,
     [width, widthNavbarMax]
@@ -66,7 +67,10 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
             className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
           }}
           elements={[{ text: "10" }, { icon: EAIcons.comment }]}
-          menuProps={{ children: "Comments", mode: "modal" }}
+          floatingProps={{
+            children: "Comments",
+            mode: EFloatingMode.DialogInContentWithSideMenu,
+          }}
         />
         <ABtn
           behaviour="neumorphicHiddenOnCalm"
@@ -75,7 +79,10 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
             className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
           }}
           elements={[{ text: "5" }, { icon: EAIcons.bell }]}
-          menuProps={{ children: "Notifications", mode: "modal" }}
+          floatingProps={{
+            children: "Notifications",
+            mode: EFloatingMode.DialogInContentWithSideMenu,
+          }}
         />
         <ABtn
           behaviour="neumorphicHiddenOnCalm"
@@ -84,7 +91,10 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
             className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
           }}
           elements={[{ icon: EAIcons.menu }]}
-          menuProps={{ children: "Menu", mode: "modal" }}
+          floatingProps={{
+            children: "Menu",
+            mode: EFloatingMode.DialogInContentWithSideMenu,
+          }}
         />
       </div>
       {twoSliceMode && (

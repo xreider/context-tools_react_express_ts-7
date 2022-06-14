@@ -1,4 +1,21 @@
 export const getNumberFromString = (x: string): number => {
+  // console.log("getNumberFromString x", x);
+
+  // console.log("getNumberFromString x", x);
+
+  // for calc(  39px +  13px * 2) strings
+  let mayBeCanCalculate = eval(
+    x
+      .replaceAll("px", "")
+      .replaceAll("calc(", "")
+      .replaceAll(")", "")
+      .replaceAll("ms", "")
+      .replaceAll("s", "")
+  );
+
+  if (typeof mayBeCanCalculate === "number") {
+    return mayBeCanCalculate;
+  }
   if (typeof x === "string" && x.length > 0) {
     // return parseFloat(x.match(/\d+/g)?.join("") || "") || 0;
 

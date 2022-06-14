@@ -4,16 +4,18 @@ import st from "./styles.module.scss";
 import { PAFloatingMenu } from "./TypesAFloatingMenu";
 
 const AFloatingMenu: FC<PAFloatingMenu> = ({
+  // menuRightRadius,
   arrowCallback,
   arrowStyle,
   arrowX,
   arrowY,
+  floatingDisappearing,
   floating,
-  menuRightRadius,
+  floatingProps,
   menuX,
   menuY,
+  setFloatingDisappearing,
   strategy,
-  menuProps,
 }) => {
   return (
     <div
@@ -23,13 +25,13 @@ const AFloatingMenu: FC<PAFloatingMenu> = ({
         top: menuY ?? 0,
         left: menuX ?? 0,
       }}
-      className={cn(st.menu, !menuRightRadius && st.menuRightRadiusDisabled)}
+      className={cn(st.menu, floatingDisappearing && st.floatingDisappearing)}
       // onClick={(event) => {
       //   event.stopPropagation();
       //   event.preventDefault();
       // }}
     >
-      {menuProps?.children}
+      {floatingProps?.children}
       <div
         ref={arrowCallback}
         style={{

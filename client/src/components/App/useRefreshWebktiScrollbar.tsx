@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 // This hooks is using for live up (refresh) webkitscrollbar,
 // which has issues when navigating through tabs.
-// Issue is it can disappear
+// Issue is it can floatingDisappearing
 
 const useRefreshWebktiScrollbar = () => {
   let timer = useRef<ReturnType<typeof setTimeout>>();

@@ -1,20 +1,20 @@
 html {
   body,
   body[data-device="desktop"] {
-    --speed_veryQuick: 40ms; // on small objects click effects
-    --speed_quick: 130ms;
-    --speed_normal: 200ms;
-    --speed_slow: 300ms; // on small objects hover effects
+    --speed_veryQuick: 30ms; // on small objects click effects
+    --speed_quick: 65ms;
+    --speed_normal: 130ms;
+    --speed_slow: 200ms; // on small objects hover effects
     --speed_verySlow: 500ms;
     --speed_slowest: 1000ms; // modal mask
   }
 
   body[data-device="phone"] {
-    --speed_veryQuick: 31ms;
-    --speed_quick: 70ms;
-    --speed_normal: 100ms;
-    --speed_slow: 200ms;
+    --speed_veryQuick: 15ms; // on small objects click effects
+    --speed_quick: 30ms;
+    --speed_normal: 80ms;
+    --speed_slow: 160ms; // on small objects hover effects
     --speed_verySlow: 400ms;
-    --speed_slowest: 800ms;
+    --speed_slowest: 800ms; // modal mask
   }
 }

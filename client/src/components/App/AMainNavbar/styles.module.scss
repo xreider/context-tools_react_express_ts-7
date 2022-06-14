@@ -91,11 +91,11 @@ $gap: var(--space_normal);
   gap: $gap;
 }
 
-@media (max-width: #{$px1536}) {
-  .AMainNavbar_container {
-    max-width: unset;
-  }
-}
+// @media (max-width: #{$px1536}) {
+//   .AMainNavbar_container {
+//     max-width: unset;
+//   }
+// }
 
 .filler {
   flex: 1;

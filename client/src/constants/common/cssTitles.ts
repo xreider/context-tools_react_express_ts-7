@@ -1,8 +1,14 @@
 // duplicating in client\src\styles\init\variablesCSS\sizes.scss
 
 export enum ECssSizeTitle {
-  widthNavbarMax = "--widthNavbarMax",
+  HeightANavbarTotal = "--heightNavbarTotal",
 
-  spaceNormal = "--space_normal",
-  spaceToScreenEdges = "--spaceToScreenEdges",
+  SpaceNormal = "--space_normal",
+  SpaceToScreenEdges = "--spaceToScreenEdges",
+
+  WidthNavbarMax = "--widthNavbarMax",
+}
+
+export enum ECssSpeedTitle {
+  Quick = "--speed_quick",
 }

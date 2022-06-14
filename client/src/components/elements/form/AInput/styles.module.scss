@@ -73,17 +73,17 @@
   padding-right: 0;
 }
 
-.AInput_sideBtn {
-  svg {
-    fill: var(--colorSVG_font);
-  }
-}
+// .AInput_sideBtn {
+//   svg {
+//     fill: var(--colorSVG_font);
+//   }
+// }
 
-.AInput_sideBtn_decoration {
-  svg {
-    fill: var(--colorSVG_inactive) !important;
-  }
-}
+// .AInput_sideBtn_decoration {
+//   svg {
+//     fill: var(--colorSVG_inactive) !important;
+//   }
+// }
 
 .AInput_eraseBtn {
   // @include touchActionNone;

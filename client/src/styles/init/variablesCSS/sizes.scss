@@ -2,29 +2,12 @@
 @import "styles/includes/variablesSCSS/sizes.scss";
 
 html {
-  --borderRadiusMedium: var(--space_normal);
-  --borderRadiusBig: var(--space_big);
-  --borderRadiusVeryBig: var(--space_veryBig);
-}
-
-html {
   --heightSmallElement: var(--space_big);
   --heightMediumElement: var(--space_veryBig);
   --heightBigElement: var(--space_biggest);
 
   --heightNavbarTotal: calc(var(--heightBigElement) + var(--space_normal) * 2);
   --heightNavbarPanel: var(--heightBigElement);
-
-  --heightSvgSmall: var(--space_normal);
-  --heightSvgMedium: var(--space_big);
-}
-
-@media (max-width: $widthNavbarMax) {
-  html {
-    --heightNavbarTotal: calc(
-      var(--heightBigElement) * 2 + var(--space_normal) * 3
-    );
-  }
 }
 
 html {
@@ -44,6 +27,13 @@ html {
   --space_big: #{$spaceNormal * 1.5};
   --space_veryBig: #{$spaceNormal * 2};
   --space_biggest: #{$spaceNormal * 3};
+
+  --heightSvgSmall: #{$spaceNormal};
+  --heightSvgMedium: #{$spaceNormal * 1.5};
+
+  --borderRadiusMedium: var(--space_normal);
+  --borderRadiusBig: #{$spaceNormal * 1.5};
+  --borderRadiusVeryBig: #{$spaceNormal * 2};
 }
 
 html {
@@ -58,8 +48,24 @@ html {
   --scrollbarBodyBorder: 8px;
 }
 
+@media (max-width: $widthNavbarMax) {
+  html {
+    @include genSpaces(12px);
+    --heightNavbarTotal: calc(
+      var(--heightBigElement) * 2 + var(--space_normal) * 3
+    );
+  }
+}
+
 @media (max-width: $px480) {
   html {
     @include genSpaces(11px);
+    --space_big: var(--space_normal);
+  }
+}
+
+@media (max-width: $px320) {
+  html {
+    @include genSpaces(9px);
   }
 }

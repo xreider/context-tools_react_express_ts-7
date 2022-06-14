@@ -13,7 +13,7 @@ export const useOutsideClick = (
       if (
         refs.every((el) => el.current && !el.current?.contains?.(event?.target))
       ) {
-        console.log("handleClickOutside");
+        // console.log("handleClickOutside");
         document.removeEventListener("click", handleClickOutside);
         cb();
       }
