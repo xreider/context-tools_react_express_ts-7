@@ -69,7 +69,8 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
           elements={[{ text: "10" }, { icon: EAIcons.comment }]}
           floatingProps={{
             children: "Comments",
-            mode: EFloatingMode.DialogInContentWithSideMenu,
+            mode: EFloatingMode.Dialog,
+            locationX: EClass.ArticleContent,
           }}
         />
         <ABtn
@@ -81,7 +82,8 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
           elements={[{ text: "5" }, { icon: EAIcons.bell }]}
           floatingProps={{
             children: "Notifications",
-            mode: EFloatingMode.DialogInContentWithSideMenu,
+            mode: EFloatingMode.Dialog,
+            locationX: EClass.ArticleContent,
           }}
         />
         <ABtn
@@ -93,7 +95,8 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
           elements={[{ icon: EAIcons.menu }]}
           floatingProps={{
             children: "Menu",
-            mode: EFloatingMode.DialogInContentWithSideMenu,
+            mode: EFloatingMode.Dialog,
+            locationX: EClass.ArticleContent,
           }}
         />
       </div>

@@ -33,6 +33,11 @@ const ABtn: FC<PABtn> = ({
   propsContainer,
   propsWrapper,
 }) => {
+  if (behaviour === "neumorphicHiddenOnCalm") {
+    if (floatingProps) {
+      floatingProps.arrowKind = "beam";
+    }
+  }
   const {
     hasMenu,
     floatingOpened,

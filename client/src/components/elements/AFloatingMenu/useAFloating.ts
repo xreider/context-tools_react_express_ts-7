@@ -1,10 +1,12 @@
 import {
   autoUpdate,
+  flip,
   offset,
   shift,
   useFloating,
 } from "@floating-ui/react-dom-interactions";
 import { ECssSizeTitle, ECssSpeedTitle } from "constants/common/cssTitles";
+import { EClass } from "constants/common/EClass";
 import useCustomWindowInnerSize from "hooks/common/useCustomWindowInnerSize";
 import { useGetCssValueNum } from "hooks/common/useGetCssVars";
 import { useOutsideClick } from "hooks/common/useOutsideClick";
@@ -12,7 +14,6 @@ import {
   CSSProperties,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -21,9 +22,7 @@ import { flushSync } from "react-dom";
 import { useStoreDevice } from "stores/useStoreDevice";
 import { IFloatingProps } from "./TypesAFloatingMenu";
 
-interface PUseMenu extends IFloatingProps {}
-
-export default function useAFloating({ floatingProps }: PUseMenu) {
+export default function useAFloating({ floatingProps }: IFloatingProps) {
   const [floatingOpened, setFloatingOpened] = useState(false);
   const [arrowStyle, setArrowStyle] = useState<CSSProperties>({});
   const [floatingDisappearing, setFloatingDisappearing] = useState(false);
@@ -39,7 +38,7 @@ export default function useAFloating({ floatingProps }: PUseMenu) {
   );
   const { width } = useCustomWindowInnerSize({ enabled: hasMenu });
 
-  const [spaceToScreenEdges, spaceNormal, heightANavbarTotal, speedQuick] =
+  const [spaceToScreenEdges, spaceNormal, heightANavbarTotal, speedNormal] =
     useGetCssValueNum(
       [
         ECssSizeTitle.SpaceToScreenEdges,
@@ -71,6 +70,42 @@ export default function useAFloating({ floatingProps }: PUseMenu) {
     middleware: [
       offset(spaceToScreenEdges),
       shift({ padding: spaceToScreenEdges }),
+      flip(),
+      {
+        name: "locationContainer",
+        fn({ x: menuX, y: menuY, rects }) {
+          if (!hasMenu) return { x: menuX, y: menuY };
+
+          menuY = Math.max(menuY, heightANavbarTotal + spaceToScreenEdges);
+
+          if (floatingProps?.location) {
+            floatingProps.locationX = floatingProps?.location;
+            floatingProps.locationY = floatingProps?.location;
+          }
+
+          if (floatingProps?.locationX) {
+            const xContainer = document.querySelector(
+              `.${floatingProps.locationX}`
+            );
+            if (
+              xContainer &&
+              typeof refs.floating?.current?.getBoundingClientRect !==
+                "undefined"
+            ) {
+              menuX = Math.min(
+                Math.max(menuX, xContainer.clientLeft),
+                xContainer.getBoundingClientRect().right -
+                  refs.floating?.current?.getBoundingClientRect().width
+              );
+            }
+          }
+
+          return {
+            x: menuX,
+            y: menuY,
+          };
+        },
+      },
       {
         name: "modalMode",
         fn({ x: menuX, y: menuY, rects }) {
@@ -79,6 +114,7 @@ export default function useAFloating({ floatingProps }: PUseMenu) {
           // console.log("heightANavbarTotal", heightANavbarTotal);
 
           menuY = Math.max(menuY, heightANavbarTotal + spaceToScreenEdges);
+
           // console.log("heightANavbarTotal2", heightANavbarTotal);
 
           // const content = document.querySelector(
@@ -131,31 +167,39 @@ export default function useAFloating({ floatingProps }: PUseMenu) {
         name: "arrowInModalMode",
         fn({ x: menuX, y: menuY, ...args }) {
           if (!hasMenu) return { x: menuX, y: menuY };
-          // const { rects, elements } = args;
+          const { rects, elements, placement } = args;
           // console.log(args);
 
-          // console.log(
-          //   "elements.reference.getBoundingClientRect()",
-          //   elements.reference.getBoundingClientRect()
-          // );
+          const heightBetweenRefAndFloating =
+            menuY - rects.reference.height + rects.reference.y;
 
-          // const heightBetweenRefAndFloating =
-          //   menuY - rects.reference.height + rects.reference.y;
-          // console.log(
-          //   "heightBetweenRefAndFloating",
-          //   heightBetweenRefAndFloating
-          // );
+          const left = rects.reference.x - menuX;
 
-          // const left = rects.reference.x;
-          // console.log(rects.reference.x, rects.floating.width, menuX);
+          // rects.floating.width + rects.floating.x - rects.reference.width;
 
-          // setArrowStyle({
-          //   position: "fixed",
-          //   top: rects.reference.y + rects.reference.height,
-          //   left: left,
-          //   height: heightBetweenRefAndFloating,
-          //   width: rects.reference.width,
-          // });
+          const topOrBottomArrowPosition =
+            floatingProps?.arrowKind === "beam"
+              ? placement === "top"
+                ? {
+                    bottom: -1 * heightBetweenRefAndFloating,
+                  }
+                : placement === "bottom"
+                ? {
+                    top: -1 * heightBetweenRefAndFloating,
+                  }
+                : {}
+              : {};
+
+          // console.log("rects", rects);
+
+          setArrowStyle({
+            ...arrowStyle,
+            position: "absolute",
+            ...topOrBottomArrowPosition,
+            left: left,
+            height: heightBetweenRefAndFloating,
+            width: rects.reference.width,
+          });
 
           // console.log(menuY);
           return {
@@ -180,7 +224,7 @@ export default function useAFloating({ floatingProps }: PUseMenu) {
     spaceToScreenEdges,
     spaceNormal,
     heightANavbarTotal,
-    speedQuick,
+    speedNormal,
   ]);
 
   useEffect(() => {
@@ -189,7 +233,7 @@ export default function useAFloating({ floatingProps }: PUseMenu) {
       setTimeout(() => {
         setFloatingOpened(false);
         setFloatingDisappearing(false);
-      }, speedQuick);
+      }, speedNormal);
     }
   }, [
     floatingDisappearing,
@@ -197,7 +241,7 @@ export default function useAFloating({ floatingProps }: PUseMenu) {
     hasMenu,
     setFloatingDisappearing,
     setFloatingOpened,
-    speedQuick,
+    speedNormal,
   ]);
 
   const arrowCallback = useCallback(

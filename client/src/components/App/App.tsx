@@ -23,7 +23,7 @@ const App: FC<PApp> = () => {
         <div
           className={cn(
             st.block,
-            EClass.ContentWithSideMenu,
+            EClass.ArticleContent,
             EFieldColorCN.readable
           )}
         >

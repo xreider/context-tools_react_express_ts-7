@@ -1,16 +1,20 @@
 import { Placement } from "@floating-ui/react-dom-interactions";
+import { EClass } from "constants/common/EClass";
 import { ReactNode } from "react";
 import useMenu from "./useAFloating";
 
 export enum EFloatingMode {
   Dialog = "Dialog",
-  DialogInContentWithSideMenu = "DialogInContentWithSideMenu",
   Dropdown = "Dropdown",
 }
 
 export interface IFloatingProps {
   floatingProps?: {
+    arrowKind?: "beam" | "triangle";
     children?: ReactNode;
+    location?: EClass;
+    locationX?: EClass;
+    locationY?: EClass;
     mode?: EFloatingMode;
     placement?: Placement;
   };
