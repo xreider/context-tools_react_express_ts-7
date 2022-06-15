@@ -1,38 +1,40 @@
-import { FC, ReactNode } from "react";
+import React, { FC, ReactElement, ReactNode } from "react";
 import AFloatingMenu from "./AFloatingMenu";
 
-import { IFloatingProps } from "./TypesAFloatingMenu";
+import { IFloatingProps, ReturnTypeUseFloating } from "./TypesAFloatingMenu";
 import useAFloating from "./useAFloating";
 
 export interface PAFloatingPlatform extends IFloatingProps {
-  children: ReactNode;
+  content: ReactNode;
+  children: ReactElement<ReturnTypeUseFloating>;
 }
 
 const AFloatingPlatform: FC<PAFloatingPlatform> = ({
   children,
-  floatingProps,
+  ...floatingProps
 }) => {
+  const otherFloatingProps = useAFloating(floatingProps);
+
   const {
     hasMenu,
     floatingOpened,
     reference,
     setFloatingOpened,
-    ...otherFloatingProps
-    // arrowCallback,
-    // arrowStyle,
-    // arrowX,
-    // arrowY,
-    // floating,
-    // menuRightRadius,
-    // menuX,
-    // menuY,
-    // strategy,
-  } = useAFloating({ floatingProps });
+    floatingDisappearing,
+    setFloatingDisappearing,
+  }: ReturnTypeUseFloating = otherFloatingProps;
   return (
     <>
-      {children}
+      {React.cloneElement(children, {
+        hasMenu,
+        floatingOpened,
+        reference,
+        setFloatingOpened,
+        floatingDisappearing,
+        setFloatingDisappearing,
+      })}
       {hasMenu && floatingOpened && (
-        <AFloatingMenu {...otherFloatingProps} floatingProps={floatingProps} />
+        <AFloatingMenu {...otherFloatingProps} {...floatingProps} />
       )}
     </>
   );

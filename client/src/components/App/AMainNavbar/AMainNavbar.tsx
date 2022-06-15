@@ -10,6 +10,7 @@ import { useGetCssValueNum } from "hooks/common/useGetCssVars";
 import { ECssSizeTitle } from "constants/common/cssTitles";
 import { EClass } from "constants/common/EClass";
 import { EFloatingMode } from "components/elements/AFloatingMenu/TypesAFloatingMenu";
+import AFloatingPlatform from "components/elements/AFloatingMenu/AFloatingPlatform";
 
 export interface PAMainNavbar {
   propsWrapper?: ComponentPropsWithoutRef<"div">;
@@ -21,7 +22,7 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
   const { width } = useCustomWindowInnerSize({});
   const [widthNavbarMax] = useGetCssValueNum([ECssSizeTitle.WidthNavbarMax]);
   const twoSliceMode = useMemo(
-    () => width < widthNavbarMax,
+    () => width <= widthNavbarMax,
     [width, widthNavbarMax]
   );
 
@@ -44,7 +45,7 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
             className: cn(
               st.logo,
               st.AMainNavbarItem,
-              st.AMainNavbarStyleItem,
+              st.AMainNavbarItemStyle,
               twoSliceMode && st.twoSliceMode
             ),
           }}
@@ -56,56 +57,65 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
         />
         {!twoSliceMode && (
           <AMainNavbarSearchBar
-            propsContainer={{ className: st.AMainNavbarStyleItem }}
+            propsContainer={{ className: st.AMainNavbarItemStyle }}
           />
         )}
         {twoSliceMode && width >= 400 && <div className={cn(st.filler)} />}
-        <ABtn
-          behaviour="neumorphicHiddenOnCalm"
-          kind="flex"
-          propsWrapper={{
-            className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
-          }}
-          elements={[{ text: "10" }, { icon: EAIcons.comment }]}
-          floatingProps={{
-            children: "Comments",
-            mode: EFloatingMode.Dialog,
-            locationX: EClass.ArticleContent,
-          }}
-        />
-        <ABtn
-          behaviour="neumorphicHiddenOnCalm"
-          kind="flex"
-          propsWrapper={{
-            className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
-          }}
-          elements={[{ text: "5" }, { icon: EAIcons.bell }]}
-          floatingProps={{
-            children: "Notifications",
-            mode: EFloatingMode.Dialog,
-            locationX: EClass.ArticleContent,
-          }}
-        />
-        <ABtn
-          behaviour="neumorphicHiddenOnCalm"
-          kind="flex"
-          propsWrapper={{
-            className: cn(st.AMainNavbarItem, st.AMainNavbarStyleItem),
-          }}
-          elements={[{ icon: EAIcons.menu }]}
-          floatingProps={{
-            children: "Menu",
-            mode: EFloatingMode.Dialog,
-            locationX: EClass.ArticleContent,
-          }}
-        />
+
+        <AFloatingPlatform
+          content={"comment"}
+          mode={EFloatingMode.Dialog}
+          locationX={EClass.ArticleContent}
+          arrowKind="beam"
+        >
+          <ABtn
+            behaviour="neumorphicHiddenOnCalm"
+            kind="flex"
+            propsWrapper={{
+              className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
+            }}
+            elements={[{ text: "10" }, { icon: EAIcons.comment }]}
+          />
+        </AFloatingPlatform>
+
+        <AFloatingPlatform
+          content={"bell"}
+          mode={EFloatingMode.Dialog}
+          locationX={EClass.ArticleContent}
+          arrowKind="beam"
+        >
+          <ABtn
+            behaviour="neumorphicHiddenOnCalm"
+            kind="flex"
+            propsWrapper={{
+              className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
+            }}
+            elements={[{ text: "5" }, { icon: EAIcons.bell }]}
+          />
+        </AFloatingPlatform>
+
+        <AFloatingPlatform
+          content={"Menu"}
+          mode={EFloatingMode.Dialog}
+          locationX={EClass.ArticleContent}
+          arrowKind="beam"
+        >
+          <ABtn
+            behaviour="neumorphicHiddenOnCalm"
+            kind="flex"
+            propsWrapper={{
+              className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
+            }}
+            elements={[{ icon: EAIcons.menu }]}
+          />
+        </AFloatingPlatform>
       </div>
       {twoSliceMode && (
         <div
           className={cn(st.AMainNavbar_container, propsContainer?.className)}
         >
           <AMainNavbarSearchBar
-          // overflowed={overflowed}
+            propsContainer={{ className: st.AMainNavbarItemStyle }}
           />
         </div>
       )}

@@ -22,12 +22,12 @@ import { flushSync } from "react-dom";
 import { useStoreDevice } from "stores/useStoreDevice";
 import { IFloatingProps } from "./TypesAFloatingMenu";
 
-export default function useAFloating({ floatingProps }: IFloatingProps) {
+export default function useAFloating(floatingProps: IFloatingProps) {
   const [floatingOpened, setFloatingOpened] = useState(false);
   const [arrowStyle, setArrowStyle] = useState<CSSProperties>({});
   const [floatingDisappearing, setFloatingDisappearing] = useState(false);
   const arrowRef = useRef<null | HTMLDivElement>(null);
-  const { device } = useStoreDevice();
+
   const hasMenu = useMemo(
     () =>
       !!(
@@ -59,11 +59,11 @@ export default function useAFloating({ floatingProps }: IFloatingProps) {
     reference,
     strategy,
     update,
-    x: menuX,
-    y: menuY,
+    x: floatingX,
+    y: floatingY,
     refs,
   } = useFloating({
-    // strategy: "fixed",
+    strategy: "fixed",
     open: floatingOpened,
     onOpenChange: setFloatingOpened,
     placement: floatingProps?.placement || "bottom",
@@ -73,10 +73,27 @@ export default function useAFloating({ floatingProps }: IFloatingProps) {
       flip(),
       {
         name: "locationContainer",
-        fn({ x: menuX, y: menuY, rects }) {
-          if (!hasMenu) return { x: menuX, y: menuY };
+        fn({ x: floatingX, y: floatingY, rects, placement, elements }) {
+          if (!hasMenu) return { x: floatingX, y: floatingY };
 
-          menuY = Math.max(menuY, heightANavbarTotal + spaceToScreenEdges);
+          // let bottomOffset = 0;
+          // if (placement === "top") {
+          //   console.log(floatingY);
+          //   bottomOffset = elements.floating.getBoundingClientRect().bottom;
+          // }
+
+          floatingY =
+            placement === "bottom"
+              ? Math.max(floatingY, heightANavbarTotal + spaceToScreenEdges)
+              : placement === "top"
+              ? Math.max(
+                  spaceToScreenEdges,
+                  window.innerHeight -
+                    rects.floating.height -
+                    heightANavbarTotal -
+                    spaceToScreenEdges
+                )
+              : floatingY;
 
           if (floatingProps?.location) {
             floatingProps.locationX = floatingProps?.location;
@@ -92,8 +109,8 @@ export default function useAFloating({ floatingProps }: IFloatingProps) {
               typeof refs.floating?.current?.getBoundingClientRect !==
                 "undefined"
             ) {
-              menuX = Math.min(
-                Math.max(menuX, xContainer.clientLeft),
+              floatingX = Math.min(
+                Math.max(floatingX, xContainer.clientLeft),
                 xContainer.getBoundingClientRect().right -
                   refs.floating?.current?.getBoundingClientRect().width
               );
@@ -101,110 +118,54 @@ export default function useAFloating({ floatingProps }: IFloatingProps) {
           }
 
           return {
-            x: menuX,
-            y: menuY,
+            x: floatingX,
+            y: floatingY,
           };
         },
       },
-      {
-        name: "modalMode",
-        fn({ x: menuX, y: menuY, rects }) {
-          if (!hasMenu) return { x: menuX, y: menuY };
-
-          // console.log("heightANavbarTotal", heightANavbarTotal);
-
-          menuY = Math.max(menuY, heightANavbarTotal + spaceToScreenEdges);
-
-          // console.log("heightANavbarTotal2", heightANavbarTotal);
-
-          // const content = document.querySelector(
-          //   `.${EClass.ContentWithSideMenu}`
-          // );
-          // const navbar = document.querySelector(`.${EClass.ANavbarWrapper}`);
-
-          // if (!content || !navbar) {
-          //   console.error("No content or ANavbarWrapper");
-          //   console.error("content: ", content);
-          //   console.error("ANavbarWrapper: ", navbar);
-          //   return { x: menuX, y: menuY };
-          // }
-
-          // const contentRect = content.getBoundingClientRect();
-          // const navbarRect = navbar.getBoundingClientRect();
-          // // console.log("contentRect", contentRect);
-          // // console.log("args", args);
-          // // console.log("rects", rects);
-          // const referenceRightEdge = rects.reference.x + rects.reference.width;
-          // const contentRightEdge = contentRect.left + contentRect.width;
-          // // console.log(
-          // //   "referenceRightEdge, contentRightEdge",
-          // //   referenceRightEdge,
-          // //   contentRightEdge
-          // // );
-
-          // const _menuRightRadius =
-          //   referenceRightEdge + spaceToScreenEdges + spaceNormal <=
-          //   contentRightEdge;
-          // // right edge
-          // if (_menuRightRadius) {
-          //   menuX = contentRightEdge - rects.floating.width;
-          //   setMenuRightRadius(true);
-          // } else {
-          //   menuX = referenceRightEdge - rects.floating.width;
-          //   setMenuRightRadius(false);
-          // }
-
-          return {
-            x: menuX,
-            y: menuY,
-            // y: navbarRect.height,
-          };
-        },
-      },
-      // arrow({ element: arrowRef }),
 
       {
         name: "arrowInModalMode",
-        fn({ x: menuX, y: menuY, ...args }) {
-          if (!hasMenu) return { x: menuX, y: menuY };
+        fn({ x: floatingX, y: floatingY, ...args }) {
+          if (!hasMenu) return { x: floatingX, y: floatingY };
           const { rects, elements, placement } = args;
           // console.log(args);
 
-          const heightBetweenRefAndFloating =
-            menuY - rects.reference.height + rects.reference.y;
+          if (floatingProps?.arrowKind === "beam") {
+            if (placement === "bottom") {
+              const heightBetweenRefAndFloating =
+                floatingY - rects.reference.height + rects.reference.y;
+              setArrowStyle({
+                ...arrowStyle,
+                position: "absolute",
+                top: -1 * heightBetweenRefAndFloating,
+                left: rects.reference.x - floatingX,
+                height: heightBetweenRefAndFloating,
+                width: rects.reference.width,
+              });
+            } else if (placement === "top") {
+              const heightBetweenRefAndFloating =
+                rects.reference.y - floatingY - rects.floating.height;
 
-          const left = rects.reference.x - menuX;
+              console.log(heightBetweenRefAndFloating);
 
-          // rects.floating.width + rects.floating.x - rects.reference.width;
+              setArrowStyle({
+                ...arrowStyle,
+                top: "unset",
+                position: "absolute",
+                bottom: -1 * heightBetweenRefAndFloating,
+                left: rects.reference.x - floatingX,
+                height: heightBetweenRefAndFloating,
+                width: rects.reference.width,
+              });
+            }
 
-          const topOrBottomArrowPosition =
-            floatingProps?.arrowKind === "beam"
-              ? placement === "top"
-                ? {
-                    bottom: -1 * heightBetweenRefAndFloating,
-                  }
-                : placement === "bottom"
-                ? {
-                    top: -1 * heightBetweenRefAndFloating,
-                  }
-                : {}
-              : {};
+            // console.log(floatingY);
+          }
 
-          // console.log("rects", rects);
-
-          setArrowStyle({
-            ...arrowStyle,
-            position: "absolute",
-            ...topOrBottomArrowPosition,
-            left: left,
-            height: heightBetweenRefAndFloating,
-            width: rects.reference.width,
-          });
-
-          // console.log(menuY);
           return {
-            x: menuX,
-            y: menuY,
+            x: floatingX,
+            y: floatingY,
           };
         },
       },
@@ -276,8 +237,8 @@ export default function useAFloating({ floatingProps }: IFloatingProps) {
     hasMenu,
     floatingOpened,
     // menuRightRadius,
-    menuX,
-    menuY,
+    floatingX,
+    floatingY,
     reference,
     setFloatingDisappearing,
     setFloatingOpened,

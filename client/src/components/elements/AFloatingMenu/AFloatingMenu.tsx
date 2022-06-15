@@ -11,19 +11,20 @@ const AFloatingMenu: FC<PAFloatingMenu> = ({
   arrowY,
   floatingDisappearing,
   floating,
-  floatingProps,
-  menuX,
-  menuY,
+  floatingX,
+  floatingY,
   setFloatingDisappearing,
   strategy,
+
+  content,
 }) => {
   return (
     <div
       ref={floating}
       style={{
         position: strategy,
-        top: menuY ?? 0,
-        left: menuX ?? 0,
+        top: floatingY ?? 0,
+        left: floatingX ?? 0,
       }}
       className={cn(st.menu, floatingDisappearing && st.floatingDisappearing)}
       // onClick={(event) => {
@@ -31,7 +32,7 @@ const AFloatingMenu: FC<PAFloatingMenu> = ({
       //   event.preventDefault();
       // }}
     >
-      {floatingProps?.children}
+      {content}
       <div
         ref={arrowCallback}
         style={{

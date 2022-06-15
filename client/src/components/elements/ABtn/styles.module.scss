@@ -31,10 +31,10 @@ body[data-device="desktop"] {
       }
     }
     &.behaviour_neumorphicHiddenOnCalm {
-      border-radius: var(--borderRadiusMedium);
+      border-radius: var(--borderRadiusSmall);
       box-shadow: var(--neumorphicShadowTransparent);
       &:hover:not(:active),
-      &.hovered {
+      &.active {
         box-shadow: var(--neumorphicShadowShown);
       }
       &:active {
@@ -47,6 +47,16 @@ body[data-device="desktop"] {
       // &.floatingOpened {
       //   border-radius: 0;
       // }
+    }
+  }
+}
+
+body[data-device="phone"] {
+  .ABtn_wrapper {
+    &.behaviour_neumorphicHiddenOnCalm {
+      &.active {
+        box-shadow: var(--neumorphicShadowShown);
+      }
     }
   }
 }

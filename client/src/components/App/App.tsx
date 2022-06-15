@@ -9,16 +9,18 @@ import AppOrnament from "./AppOrnament";
 import useRefreshWebktiScrollbar from "./useRefreshWebktiScrollbar";
 
 import { EClass } from "constants/common/EClass";
+import { useGetDeviceFromStore } from "hooks/common/useGetDeviceFromStore";
 
 export interface PApp {}
 
 const App: FC<PApp> = () => {
   useInitDevice();
+  const { isPhone } = useGetDeviceFromStore();
   useRefreshWebktiScrollbar();
   return (
     <div className={cn(EFieldColorCN.neutral, st.App_wrapper)}>
       <AMainNavbar propsWrapper={{ className: stOrnament.AppNavbar_wrapper }} />
-      <AppOrnament />
+      {!isPhone && <AppOrnament />}
       <div className={cn(st.content)}>
         <div
           className={cn(

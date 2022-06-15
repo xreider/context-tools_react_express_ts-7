@@ -31,6 +31,7 @@ html {
   --heightSvgSmall: #{$spaceNormal};
   --heightSvgMedium: #{$spaceNormal * 1.5};
 
+  --borderRadiusSmall: var(--space_small);
   --borderRadiusMedium: var(--space_normal);
   --borderRadiusBig: #{$spaceNormal * 1.5};
   --borderRadiusVeryBig: #{$spaceNormal * 2};

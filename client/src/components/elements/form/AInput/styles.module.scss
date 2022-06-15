@@ -40,7 +40,7 @@
       left: var(--space_normal);
       border-radius: 50px;
       width: calc(100% - var(--space_normal) * 2);
-      bottom: calc($afterHeight / -2);
+      bottom: 0;
       transition: var(--speed_normal);
     }
   }

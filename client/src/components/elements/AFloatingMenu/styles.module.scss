@@ -26,27 +26,35 @@
 
 .menu,
 .arrow,
-.arrow .arrowBeam {
+.arrow .arrowBeam::after {
   background: var(--colorBG);
   z-index: 40;
 }
 
 .menu,
-.arrow .arrowBeam {
+.arrow .arrowBeam::after {
   box-shadow: var(--neumorphicShadowShown);
 }
 
 .arrow {
   position: absolute;
   // background: red;
-  overflow: hidden;
 
   .arrowBeam {
     // background: red;
-    position: absolute;
+    $offset: 5px;
     overflow: hidden;
-    width: 100%;
+    position: absolute;
+    left: -$offset;
+    width: calc(100% + 2 * $offset);
     height: 100%;
+    &::after {
+      content: "";
+      position: absolute;
+      left: $offset;
+      width: calc(100% - 2 * $offset);
+      height: 100%;
+    }
   }
 }
 
