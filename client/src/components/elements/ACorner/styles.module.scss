@@ -93,7 +93,8 @@
       translate($directionLeftRightOffset, $directionTopBottomOffset);
   }
   &.directionTopRight {
-    transform: rotate(270deg) translate($directionLeftRightOffset, -0.1px);
+    transform: rotate(270deg)
+      translate($directionLeftRightOffset, $directionTopBottomOffset);
   }
   &.directionBottomLeft {
     transform: rotate(90deg)

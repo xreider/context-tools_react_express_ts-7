@@ -110,25 +110,25 @@ export const setBorderBeamAndFloatingRadiuses = ({
     );
   }
 
-  const minBeamRadius = Math.min(beamLeftRadius, beamRightRadius);
+  // // equal sides
+  // const minBeamRadius = Math.min(beamLeftRadius, beamRightRadius);
+  // setRadiusesBeamMode({
+  //   floatingLeft: floatingLeftRadius,
+  //   floatingRight: floatingRightRadius,
+  //   beamLeft:
+  //     minBeamRadius < borderRadiusReference / 2
+  //       ? beamLeftRadius
+  //       : minBeamRadius,
+  //   beamRight:
+  //     minBeamRadius < borderRadiusReference / 2
+  //       ? beamRightRadius
+  //       : minBeamRadius,
+  // });
 
   setRadiusesBeamMode({
     floatingLeft: floatingLeftRadius,
     floatingRight: floatingRightRadius,
-    beamLeft:
-      minBeamRadius < borderRadiusReference / 2
-        ? beamLeftRadius
-        : minBeamRadius,
-    beamRight:
-      minBeamRadius < borderRadiusReference / 2
-        ? beamRightRadius
-        : minBeamRadius,
+    beamLeft: beamLeftRadius,
+    beamRight: beamRightRadius,
   });
-
-  // setRadiusesBeamMode({
-  //   floatingLeft: floatingLeftRadius,
-  //   floatingRight: floatingRightRadius,
-  //   beamLeft: beamLeftRadius,
-  //   beamRight: beamRightRadius,
-  // });
 };
