@@ -3,20 +3,25 @@ import cn from "classnames";
 import st from "./styles.module.scss";
 import AIcon, { EAIcons, PAIcon } from "../AIcon/AIcon";
 
-import { ReturnTypeUseFloating } from "../AFloatingMenu/TypesAFloatingMenu";
+import { TFloatingReferenceProps } from "../AFloatingMenu/TypesAFloatingMenu";
 
 export interface PABtnKid extends ComponentPropsWithoutRef<"div"> {
   text?: ReactElement | string;
 }
 
-export interface PABtn extends ReturnTypeUseFloating {
+export interface PABtn {
   active?: boolean;
   activeClassName?: string;
   behaviour?: "neumorphicHiddenOnCalm" | "simpleMask" | "none";
+  stylesOnFloatingOpened?: {
+    readonly [key: string]: string;
+  };
   elements?: (PABtnKid | PAIcon)[];
   kind?: "glow" | "solid" | "outline" | "flex";
   propsContainer?: ComponentPropsWithoutRef<"div">;
   propsWrapper?: ComponentPropsWithoutRef<"button">;
+
+  floatingMenu?: TFloatingReferenceProps;
 }
 
 const ABtn: FC<PABtn> = ({
@@ -27,14 +32,25 @@ const ABtn: FC<PABtn> = ({
   kind,
   propsContainer,
   propsWrapper,
+  floatingMenu,
 
-  reference,
-  floatingDisappearing,
-  floatingOpened,
-  hasMenu,
-  setFloatingDisappearing,
-  setFloatingOpened,
+  // external styles
+  stylesOnFloatingOpened,
 }) => {
+  const {
+    arrowKind,
+    reference,
+    floatingDisappearing,
+    floatingOpened,
+    hasMenu,
+    placement,
+    setFloatingDisappearing,
+    setFloatingOpened,
+  } = floatingMenu || {};
+  // console.log("arrowKind", arrowKind);
+  // console.log("placement", placement);
+  // console.log("floatingOpened", floatingOpened);
+
   return (
     <button
       {...propsWrapper}
@@ -44,11 +60,25 @@ const ABtn: FC<PABtn> = ({
         behaviour && st[`behaviour_${behaviour}`],
         kind && st[`kind_${kind}`],
         !floatingDisappearing && floatingOpened && st.active,
+        !floatingDisappearing && floatingOpened && st.floatingOpened,
+        arrowKind && st[`arrowKind_${arrowKind}`],
+        placement && st[`placement_${placement}`],
+
         active && st.active,
         active && activeClassName,
-        propsWrapper?.className
+        propsWrapper?.className,
+
+        // external styles
+        !floatingDisappearing &&
+          floatingOpened &&
+          stylesOnFloatingOpened?.floatingOpened,
+        floatingDisappearing && stylesOnFloatingOpened?.floatingDisappearing,
+        arrowKind && stylesOnFloatingOpened?.[`arrowKind_${arrowKind}`],
+        placement && stylesOnFloatingOpened?.[`placement_${placement}`]
       )}
       onClick={(event) => {
+        // event.preventDefault();
+        // event.stopPropagation();
         if (hasMenu) {
           if (!floatingDisappearing && !floatingOpened) {
             setFloatingOpened?.(true);

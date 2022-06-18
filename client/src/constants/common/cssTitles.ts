@@ -1,8 +1,15 @@
 // duplicating in client\src\styles\init\variablesCSS\sizes.scss
 
 export enum ECssSizeTitle {
-  HeightANavbarTotal = "--heightNavbarTotal",
+  BorderRadiusSmall = "--borderRadiusSmall",
+  BorderRadiusMedium = "--borderRadiusMedium",
+  BorderRadiusBig = "--borderRadiusBig",
+  BorderRadiusVeryBig = "--borderRadiusVeryBig",
 
+  HeightANavbarTotal = "--heightNavbarTotal",
+  HeightANavbarPanel = "--heightNavbarPanel",
+
+  SpaceSmall = "--space_small",
   SpaceNormal = "--space_normal",
   SpaceToScreenEdges = "--spaceToScreenEdges",
 
@@ -11,4 +18,5 @@ export enum ECssSizeTitle {
 
 export enum ECssSpeedTitle {
   Quick = "--speed_quick",
+  Normal = "--speed_normal",
 }

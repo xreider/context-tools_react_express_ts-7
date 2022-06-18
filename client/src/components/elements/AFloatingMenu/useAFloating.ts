@@ -1,31 +1,50 @@
 import {
   autoUpdate,
   flip,
+  MiddlewareArguments,
   offset,
   shift,
+  size,
   useFloating,
 } from "@floating-ui/react-dom-interactions";
 import { ECssSizeTitle, ECssSpeedTitle } from "constants/common/cssTitles";
-import { EClass } from "constants/common/EClass";
 import useCustomWindowInnerSize from "hooks/common/useCustomWindowInnerSize";
 import { useGetCssValueNum } from "hooks/common/useGetCssVars";
 import { useOutsideClick } from "hooks/common/useOutsideClick";
 import {
   CSSProperties,
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
-import { flushSync } from "react-dom";
-import { useStoreDevice } from "stores/useStoreDevice";
-import { IFloatingProps } from "./TypesAFloatingMenu";
+import { applyFloatingHeight } from "./middlewares/applyFloatingHeight";
+import { setArrowBeamStyle } from "./middlewares/setArrowBeamStyle";
+import { setBorderBeamAndFloatingRadiuses } from "./middlewares/setBorderBeamAndFloatingRadiuses";
+import { IUseFloatingProps } from "./TypesAFloatingMenu";
 
-export default function useAFloating(floatingProps: IFloatingProps) {
+export interface PRadiusesBeamMode {
+  floatingLeft?: number;
+  floatingRight?: number;
+  beamLeft: number;
+  beamRight: number;
+}
+
+export default function useAFloating(floatingProps: IUseFloatingProps) {
   const [floatingOpened, setFloatingOpened] = useState(false);
   const [arrowStyle, setArrowStyle] = useState<CSSProperties>({});
+  // const [floatingStyle, setFloatingStyle] = useState<CSSProperties>({});
   const [floatingDisappearing, setFloatingDisappearing] = useState(false);
+  const [radiusesBeamMode, setRadiusesBeamMode] = useState<PRadiusesBeamMode>({
+    floatingLeft: 0,
+    floatingRight: 0,
+    beamLeft: 0,
+    beamRight: 0,
+  });
+
   const arrowRef = useRef<null | HTMLDivElement>(null);
 
   const hasMenu = useMemo(
@@ -38,62 +57,58 @@ export default function useAFloating(floatingProps: IFloatingProps) {
   );
   const { width } = useCustomWindowInnerSize({ enabled: hasMenu });
 
-  const [spaceToScreenEdges, spaceNormal, heightANavbarTotal, speedNormal] =
-    useGetCssValueNum(
-      [
-        ECssSizeTitle.SpaceToScreenEdges,
-        ECssSizeTitle.SpaceNormal,
-        ECssSizeTitle.HeightANavbarTotal,
-        ECssSpeedTitle.Quick,
-      ],
-      { enabled: hasMenu }
-    );
+  const [
+    spaceSmall,
+    spaceNormal,
+    spaceToScreenEdges,
+    heightANavbarTotal,
+    borderRadiusMedium,
 
-  // console.log("spaceToScreenEdges", spaceToScreenEdges);
+    speedQuick,
+  ] = useGetCssValueNum(
+    [
+      ECssSizeTitle.SpaceSmall,
+      ECssSizeTitle.SpaceNormal,
+      ECssSizeTitle.SpaceToScreenEdges,
+      ECssSizeTitle.HeightANavbarTotal,
+      ECssSizeTitle.BorderRadiusMedium,
+
+      ECssSpeedTitle.Quick,
+    ],
+    { enabled: hasMenu }
+  );
+
+  console.log("spaceToScreenEdges", spaceToScreenEdges);
 
   // console.log("heightANavbarTotal", heightANavbarTotal);
 
   const {
     floating,
-    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
+    // middlewareData,
     reference,
     strategy,
     update,
     x: floatingX,
     y: floatingY,
     refs,
+    placement,
   } = useFloating({
     strategy: "fixed",
     open: floatingOpened,
     onOpenChange: setFloatingOpened,
     placement: floatingProps?.placement || "bottom",
     middleware: [
-      offset(spaceToScreenEdges),
+      offset(
+        Math.max(spaceSmall, floatingProps?.gapHeight ?? spaceToScreenEdges)
+      ),
       shift({ padding: spaceToScreenEdges }),
-      flip(),
+
+      flip({ padding: 10 }),
+
       {
         name: "locationContainer",
         fn({ x: floatingX, y: floatingY, rects, placement, elements }) {
           if (!hasMenu) return { x: floatingX, y: floatingY };
-
-          // let bottomOffset = 0;
-          // if (placement === "top") {
-          //   console.log(floatingY);
-          //   bottomOffset = elements.floating.getBoundingClientRect().bottom;
-          // }
-
-          floatingY =
-            placement === "bottom"
-              ? Math.max(floatingY, heightANavbarTotal + spaceToScreenEdges)
-              : placement === "top"
-              ? Math.max(
-                  spaceToScreenEdges,
-                  window.innerHeight -
-                    rects.floating.height -
-                    heightANavbarTotal -
-                    spaceToScreenEdges
-                )
-              : floatingY;
 
           if (floatingProps?.location) {
             floatingProps.locationX = floatingProps?.location;
@@ -103,14 +118,15 @@ export default function useAFloating(floatingProps: IFloatingProps) {
           if (floatingProps?.locationX) {
             const xContainer = document.querySelector(
               `.${floatingProps.locationX}`
-            );
+            ) as HTMLElement;
+            // console.log(xContainer);
             if (
               xContainer &&
               typeof refs.floating?.current?.getBoundingClientRect !==
                 "undefined"
             ) {
               floatingX = Math.min(
-                Math.max(floatingX, xContainer.clientLeft),
+                Math.max(floatingX, xContainer.offsetLeft),
                 xContainer.getBoundingClientRect().right -
                   refs.floating?.current?.getBoundingClientRect().width
               );
@@ -124,49 +140,34 @@ export default function useAFloating(floatingProps: IFloatingProps) {
         },
       },
 
+      size({
+        apply(args) {
+          // Do things with the data, e.g.
+          applyFloatingHeight({ args, heightANavbarTotal, spaceToScreenEdges });
+        },
+      }),
       {
-        name: "arrowInModalMode",
-        fn({ x: floatingX, y: floatingY, ...args }) {
-          if (!hasMenu) return { x: floatingX, y: floatingY };
-          const { rects, elements, placement } = args;
-          // console.log(args);
-
-          if (floatingProps?.arrowKind === "beam") {
-            if (placement === "bottom") {
-              const heightBetweenRefAndFloating =
-                floatingY - rects.reference.height + rects.reference.y;
-              setArrowStyle({
-                ...arrowStyle,
-                position: "absolute",
-                top: -1 * heightBetweenRefAndFloating,
-                left: rects.reference.x - floatingX,
-                height: heightBetweenRefAndFloating,
-                width: rects.reference.width,
-              });
-            } else if (placement === "top") {
-              const heightBetweenRefAndFloating =
-                rects.reference.y - floatingY - rects.floating.height;
-
-              console.log(heightBetweenRefAndFloating);
-
-              setArrowStyle({
-                ...arrowStyle,
-                top: "unset",
-                position: "absolute",
-                bottom: -1 * heightBetweenRefAndFloating,
-                left: rects.reference.x - floatingX,
-                height: heightBetweenRefAndFloating,
-                width: rects.reference.width,
-              });
-            }
-
-            // console.log(floatingY);
-          }
-
-          return {
-            x: floatingX,
-            y: floatingY,
-          };
+        name: "setBorderBeamAndFloatingRadiuses",
+        fn(args) {
+          setBorderBeamAndFloatingRadiuses({
+            args,
+            borderRadiusReference: borderRadiusMedium,
+            borderRadiusFloating: spaceToScreenEdges,
+            enable: hasMenu && floatingProps?.arrowKind === "beam",
+            setRadiusesBeamMode,
+          });
+          return args;
+        },
+      },
+      {
+        name: "setArrowBeamStyle",
+        fn(args) {
+          setArrowBeamStyle({
+            args,
+            setArrowStyle,
+            enable: hasMenu && floatingProps?.arrowKind === "beam",
+          });
+          return args;
         },
       },
     ],
@@ -175,26 +176,11 @@ export default function useAFloating(floatingProps: IFloatingProps) {
 
   useEffect(() => {
     if (!hasMenu) return;
-    setTimeout(() => {
-      flushSync(() => update());
-    }, 0);
-  }, [
-    width,
-    hasMenu,
-    update,
-    spaceToScreenEdges,
-    spaceNormal,
-    heightANavbarTotal,
-    speedNormal,
-  ]);
-
-  useEffect(() => {
-    if (!hasMenu) return;
     if (floatingOpened && floatingDisappearing) {
       setTimeout(() => {
-        setFloatingOpened(false);
         setFloatingDisappearing(false);
-      }, speedNormal);
+        setFloatingOpened(false);
+      }, speedQuick);
     }
   }, [
     floatingDisappearing,
@@ -202,7 +188,7 @@ export default function useAFloating(floatingProps: IFloatingProps) {
     hasMenu,
     setFloatingDisappearing,
     setFloatingOpened,
-    speedNormal,
+    speedQuick,
   ]);
 
   const arrowCallback = useCallback(
@@ -222,16 +208,26 @@ export default function useAFloating(floatingProps: IFloatingProps) {
     hasMenu
   );
 
-  // useEffect(() => {
-  //   if (!hasMenu) return;
-  //   update();
-  // }, [arrowStyle]);
+  useEffect(() => {
+    if (!hasMenu) return;
+    setTimeout(() => {
+      update();
+    }, speedQuick);
+  }, [
+    width,
+    hasMenu,
+    update,
+    // spaceToScreenEdges,
+    // spaceNormal,
+    // heightANavbarTotal,
+    // speedQuick,
+  ]);
 
   return {
     arrowCallback,
     arrowStyle,
-    arrowX,
-    arrowY,
+    // arrowX,
+    // arrowY,
     floatingDisappearing,
     floating,
     hasMenu,
@@ -239,9 +235,112 @@ export default function useAFloating(floatingProps: IFloatingProps) {
     // menuRightRadius,
     floatingX,
     floatingY,
+    placement,
+    radiusesBeamMode,
     reference,
     setFloatingDisappearing,
     setFloatingOpened,
     strategy,
   };
 }
+
+// useEffect(() => {
+//   if (!hasMenu) return;
+//   update();
+// }, [
+//   width,
+//   hasMenu,
+//   update,
+//   spaceToScreenEdges,
+//   spaceNormal,
+//   heightANavbarTotal,
+//   speedQuick,
+// ]);
+
+// size({
+//   apply({ availableWidth, elements }) {
+//     // Do things with the data, e.g.
+//     Object.assign(elements.floating.style, {
+//       maxWidth: `${availableWidth}px`,
+//     });
+//   },
+// }),
+
+// {
+//   name: "gapHeight",
+//   fn({ x: floatingX, y: floatingY, rects, placement, elements }) {
+//     if (!hasMenu) return { x: floatingX, y: floatingY };
+
+//     if (floatingProps?.gapHeight) {
+//       floatingProps.locationX = floatingProps?.location;
+//       floatingProps.locationY = floatingProps?.location;
+//     }
+
+//     if (floatingProps?.locationX) {
+//       const xContainer = document.querySelector(
+//         `.${floatingProps.locationX}`
+//       ) as HTMLElement;
+//       if (
+//         xContainer &&
+//         typeof refs.floating?.current?.getBoundingClientRect !==
+//           "undefined"
+//       ) {
+//         floatingX = Math.min(
+//           Math.max(floatingX, xContainer.offsetLeft),
+//           xContainer.getBoundingClientRect().right -
+//             refs.floating?.current?.getBoundingClientRect().width
+//         );
+//       }
+//     }
+
+//     return {
+//       x: floatingX,
+//       y: floatingY,
+//     };
+//   },
+// },
+
+// let bottomOffset = 0;
+// if (placement === "top") {
+//   console.log(floatingY);
+//   bottomOffset = elements.floating.getBoundingClientRect().bottom;
+// }
+
+// floatingY =
+//   placement === "bottom"
+//     ? Math.max(floatingY, heightANavbarTotal + spaceToScreenEdges)
+//     : placement === "top"
+//     ? floatingY
+//     : floatingY;
+
+// Math.max(
+//     spaceToScreenEdges,
+//     window.innerHeight -
+//       rects.floating.height -
+//       heightANavbarTotal -
+//       spaceToScreenEdges
+//   )
+// : floatingY;
+
+// const maxHeight =
+//   floatingY > 0
+//     ? window.innerHeight -
+//       spaceToScreenEdges * 2 -
+//       heightANavbarTotal -
+//       floatingY
+//     : "50vh";
+
+// console.log(floatingY);
+
+// setFloatingStyle({
+//   maxHeight,
+//   //  -
+//   // spaceToScreenEdges * 2 -
+//   // heightANavbarTotal,
+// });
+
+// console.log(Math.max(xContainer.offsetLeft));
+// console.log(
+//   xContainer.getBoundingClientRect().right -
+//     refs.floating?.current?.getBoundingClientRect().width
+// );

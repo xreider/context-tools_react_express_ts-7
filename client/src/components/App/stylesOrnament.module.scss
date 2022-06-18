@@ -56,16 +56,13 @@ $borderRadius: var(--borderRadiusVeryBig);
 .AppCorner {
   fill: var(--colorBG) !important;
   // fill: rgb(217 221 230) !important;
-  position: fixed;
-  background: transparent !important;
+  position: fixed !important;
   // border-radius
   width: $borderRadius;
-}
-
-.AppCornerRightTop {
+  height: $borderRadius;
   right: 0;
   top: var(--heightNavbarTotal);
-  transform: rotate(90deg);
+  z-index: 8 !important;
 }
 
 @supports not selector(::-webkit-scrollbar) {

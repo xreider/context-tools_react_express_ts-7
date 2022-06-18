@@ -2,17 +2,27 @@
   border-radius: var(--borderRadiusBig);
   padding: var(--space_big);
   z-index: 1;
-  height: 500px;
+  height: 1000px;
   width: 500px;
   max-width: calc(100% - 2 * var(--spaceToScreenEdges));
-  max-height: calc(
-    100vh - var(--heightNavbarTotal) - 2 * var(--spaceToScreenEdges)
-  );
+
+  // max-height: calc(
+  //   100vh - var(--heightNavbarTotal) - 2 * var(--spaceToScreenEdges)
+  // );
 
   animation: show var(--speed_normal) backwards;
   transition: opacity var(--speed_normal);
   &.floatingDisappearing {
     opacity: 0 !important;
+  }
+
+  &.placement_top {
+    border-bottom-left-radius: var(--AFloatingMenuLeftRadius);
+    border-bottom-right-radius: var(--AFloatingMenuRightRadius);
+  }
+  &.placement_bottom {
+    border-top-left-radius: var(--AFloatingMenuLeftRadius);
+    border-top-right-radius: var(--AFloatingMenuRightRadius);
   }
 }
 
@@ -25,38 +35,110 @@
 // }
 
 .menu,
-.arrow,
-.arrow .arrowBeam::after {
+.arrow {
   background: var(--colorBG);
-  z-index: 40;
+  // z-index: 10;
 }
 
-.menu,
-.arrow .arrowBeam::after {
+// .arrow .arrowBeam::after
+.menu {
   box-shadow: var(--neumorphicShadowShown);
 }
 
 .arrow {
   position: absolute;
+  z-index: -1 !important;
   // background: red;
 
+  $offset: 12px;
   .arrowBeam {
     // background: red;
-    $offset: 5px;
-    overflow: hidden;
     position: absolute;
-    left: -$offset;
-    width: calc(100% + 2 * $offset);
+    width: $offset;
     height: 100%;
+    overflow: hidden;
     &::after {
       content: "";
       position: absolute;
-      left: $offset;
-      width: calc(100% - 2 * $offset);
+      left: 0;
+      right: 0;
+      width: 100%;
       height: 100%;
     }
   }
+
+  .arrowBeamLeftEdge {
+    left: -$offset;
+    background-image: linear-gradient(
+      to left,
+      var(--colorShadowLightMedium) calc(-1 * var(--space_normal)),
+      transparent
+    );
+  }
+  .arrowBeamRightEdge {
+    right: -$offset;
+    background-image: linear-gradient(
+      to right,
+      var(--colorShadowDarkMedium) calc(-1 * var(--space_normal)),
+      transparent
+    );
+  }
+
+  .arrowBeamEdgeFlat {
+    top: calc(-1 * var(--space_small));
+    height: calc(100% + 2 * var(--space_small));
+  }
+
+  // .arrowBeam {
+  //   // background: red;
+  //   $offset: 12px;
+  //   overflow: hidden;
+  //   position: absolute;
+  //   left: -$offset;
+  //   width: calc(100% + 2 * $offset);
+  //   height: 100%;
+  //   &::after {
+  //     content: "";
+  //     position: absolute;
+  //     left: $offset;
+  //     width: calc(100% - 2 * $offset);
+  //     height: 100%;
+  //     box-shadow: var(--neumorphicShadowShown);
+  //   }
+  // }
 }
+
+.menu.placement_top .arrow .arrowBeam:not(.arrowBeamEdgeFlat) {
+  height: calc(100% + var(--space_small));
+  bottom: calc(-1 * var(--space_small));
+}
+
+.menu.placement_bottom .arrow .arrowBeam:not(.arrowBeamEdgeFlat) {
+  height: calc(100% + var(--space_small));
+  top: calc(-1 * var(--space_small));
+}
+
+// .menu.placement_top .arrow .arrowBeam
+
+// .menu.placement_bottom .arrow .arrowBeam.arrowBeamEdgeFlat {
+//   top: calc(-1 * var(--space_small));
+//   height: calc(100% + 2 * var(--space_small));
+// }
+
+// .arrowCorner {
+//   position: absolute;
+
+//   // max-width: var(--ACornerSize);
+//   // max-height: var(--ACornerSize);
+// }
+
+// .arrowLeftCorner {
+//   left: calc(-1 * var(--ACornerLeftSize));
+// }
+
+// .arrowRightCorner {
+//   right: calc(-1 * var(--ACornerRightSize));
+// }
 
 @keyframes show {
   from {

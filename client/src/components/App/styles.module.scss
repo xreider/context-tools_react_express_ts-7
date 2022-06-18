@@ -6,23 +6,27 @@
 
 body[data-device="desktop"] {
   .App_wrapper {
-    padding-top: var(--spaceAppPaddingTop);
-    padding-bottom: var(--spaceAppPaddingBottom);
+    padding: var(--spaceToScreenEdges);
+    padding-top: calc(var(--heightNavbarTotal) + var(--spaceToScreenEdges));
   }
-  .content {
-    margin-top: var(--heightNavbarTotal);
-    margin-left: var(--spaceToScreenEdges);
-    margin-right: var(--spaceToScreenEdges);
+}
+
+body[data-device="phone"] {
+  .App_wrapper {
+    padding: var(--spaceToScreenEdges);
+    padding-bottom: calc(var(--heightNavbarTotal) + var(--spaceToScreenEdges));
   }
 }
 
 .block {
   box-shadow: var(--smallShadowOutside);
   margin: 40px;
-  padding: var(--spacePaddingBlock);
   border-radius: var(--borderRadiusBig);
   max-width: var(--widthNavbarMax);
   margin: auto;
+  & > * {
+    padding: var(--spacePaddingBlock);
+  }
 }
 
 @media (max-width: #{$widthNavbarMax + 300px}) {

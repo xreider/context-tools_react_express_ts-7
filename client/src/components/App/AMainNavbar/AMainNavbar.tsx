@@ -20,7 +20,13 @@ export interface PAMainNavbar {
 const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
   // const [overflowed, setOverflowed] = useState(false);
   const { width } = useCustomWindowInnerSize({});
-  const [widthNavbarMax] = useGetCssValueNum([ECssSizeTitle.WidthNavbarMax]);
+  const [widthNavbarMax, spaceNormal, spaceToScreenEdges, heightANavbarPanel] =
+    useGetCssValueNum([
+      ECssSizeTitle.WidthNavbarMax,
+      ECssSizeTitle.SpaceNormal,
+      ECssSizeTitle.SpaceToScreenEdges,
+      ECssSizeTitle.HeightANavbarPanel,
+    ]);
   const twoSliceMode = useMemo(
     () => width <= widthNavbarMax,
     [width, widthNavbarMax]
@@ -64,51 +70,123 @@ const AMainNavbar: FC<PAMainNavbar> = ({ propsWrapper, propsContainer }) => {
 
         <AFloatingPlatform
           content={"comment"}
+          triggerElement={
+            <ABtn
+              behaviour="neumorphicHiddenOnCalm"
+              kind="flex"
+              propsWrapper={{
+                className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
+              }}
+              elements={[{ text: "10" }, { icon: EAIcons.comment }]}
+              stylesOnFloatingOpened={st}
+            />
+          }
           mode={EFloatingMode.Dialog}
           locationX={EClass.ArticleContent}
           arrowKind="beam"
-        >
-          <ABtn
-            behaviour="neumorphicHiddenOnCalm"
-            kind="flex"
-            propsWrapper={{
-              className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
-            }}
-            elements={[{ text: "10" }, { icon: EAIcons.comment }]}
-          />
-        </AFloatingPlatform>
+          gapHeight={
+            twoSliceMode
+              ? heightANavbarPanel + 2 * spaceNormal + spaceToScreenEdges
+              : spaceNormal + spaceToScreenEdges
+          }
+          floatingMenu={{
+            classNameWrapper: st.floatingMenu,
+          }}
+        />
 
         <AFloatingPlatform
           content={"bell"}
+          triggerElement={
+            <ABtn
+              behaviour="neumorphicHiddenOnCalm"
+              kind="flex"
+              propsWrapper={{
+                className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
+              }}
+              elements={[{ text: "5" }, { icon: EAIcons.bell }]}
+              stylesOnFloatingOpened={st}
+            />
+          }
           mode={EFloatingMode.Dialog}
           locationX={EClass.ArticleContent}
           arrowKind="beam"
-        >
-          <ABtn
-            behaviour="neumorphicHiddenOnCalm"
-            kind="flex"
-            propsWrapper={{
-              className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
-            }}
-            elements={[{ text: "5" }, { icon: EAIcons.bell }]}
-          />
-        </AFloatingPlatform>
+          gapHeight={
+            twoSliceMode
+              ? heightANavbarPanel + 2 * spaceNormal + spaceToScreenEdges
+              : spaceNormal + spaceToScreenEdges
+          }
+          floatingMenu={{
+            classNameWrapper: st.floatingMenu,
+          }}
+        />
 
         <AFloatingPlatform
-          content={"Menu"}
           mode={EFloatingMode.Dialog}
           locationX={EClass.ArticleContent}
           arrowKind="beam"
-        >
-          <ABtn
-            behaviour="neumorphicHiddenOnCalm"
-            kind="flex"
-            propsWrapper={{
-              className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
-            }}
-            elements={[{ icon: EAIcons.menu }]}
-          />
-        </AFloatingPlatform>
+          gapHeight={
+            twoSliceMode
+              ? heightANavbarPanel + 2 * spaceNormal + spaceToScreenEdges
+              : spaceNormal + spaceToScreenEdges
+          }
+          floatingMenu={{
+            classNameWrapper: st.floatingMenu,
+          }}
+          content={
+            <AFloatingPlatform
+              mode={EFloatingMode.Dialog}
+              locationX={EClass.ArticleContent}
+              arrowKind="beam"
+              floatingMenu={{
+                classNameWrapper: st.floatingMenu,
+              }}
+              gapHeight={0}
+              content={
+                <AFloatingPlatform
+                  mode={EFloatingMode.Dialog}
+                  locationX={EClass.ArticleContent}
+                  arrowKind="beam"
+                  gapHeight={0}
+                  content={"Menu2"}
+                  triggerElement={
+                    <ABtn
+                      behaviour="neumorphicHiddenOnCalm"
+                      kind="flex"
+                      propsWrapper={{
+                        className: cn(
+                          st.AMainNavbarItem,
+                          st.AMainNavbarItemStyle
+                        ),
+                      }}
+                      elements={[{ icon: EAIcons.menu }]}
+                    />
+                  }
+                />
+              }
+              triggerElement={
+                <ABtn
+                  behaviour="neumorphicHiddenOnCalm"
+                  kind="flex"
+                  propsWrapper={{
+                    className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
+                  }}
+                  elements={[{ icon: EAIcons.menu }]}
+                />
+              }
+            />
+          }
+          triggerElement={
+            <ABtn
+              behaviour="neumorphicHiddenOnCalm"
+              kind="flex"
+              propsWrapper={{
+                className: cn(st.AMainNavbarItem, st.AMainNavbarItemStyle),
+              }}
+              elements={[{ icon: EAIcons.menu }]}
+              stylesOnFloatingOpened={st}
+            />
+          }
+        />
       </div>
       {twoSliceMode && (
         <div

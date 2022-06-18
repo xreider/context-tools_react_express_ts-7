@@ -1,0 +1,107 @@
+@import "styles/includes/common/elements.scss";
+
+.ACorner_wrapper {
+  // background-color: var(--colorBG);
+  // position: relative;
+  position: absolute;
+  overflow: hidden;
+  background: transparent !important;
+  width: var(--ACornerSize);
+  height: var(--ACornerSize);
+  display: flex;
+  @include touchActionNone;
+  svg {
+    fill: var(--colorBG) !important;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    min-width: 100%;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    border-radius: 500px;
+    background-color: transparent;
+    z-index: -1;
+    // box-shadow: inset 4px 4px 8px var(--colorShadowDarkMedium),
+    //   inset -4px -4px 8px var(--colorShadowLightMedium);
+  }
+
+  &.placement_top {
+    top: 0;
+  }
+
+  &.placement_bottom {
+    bottom: 0;
+  }
+
+  // positioning
+  &.positionMinusOfThisWidth {
+    &.directionTopLeft,
+    &.directionBottomLeft {
+      left: calc(-1 * var(--ACornerSize));
+    }
+    &.directionTopRight,
+    &.directionBottomRight {
+      right: calc(-1 * var(--ACornerSize));
+    }
+  }
+  // shadows
+
+  &.shadowNeumorphic {
+    &.directionTopLeft::after {
+      box-shadow: inset 4px 4px 8px -1px var(--colorShadowLightMedium);
+    }
+    &.directionTopRight::after {
+      box-shadow: inset -2px 2px 8px -1px var(--colorShadowDarkMedium),
+        inset 4px 4px 8px -1px var(--colorShadowLightMedium);
+    }
+    &.directionBottomLeft::after {
+      box-shadow: inset 4px 4px 8px -1px var(--colorShadowLightMedium);
+    }
+    &.directionBottomRight::after {
+      box-shadow: inset 3px 3px 8px -2px var(--colorShadowDarkMedium);
+    }
+  }
+
+  &.shadowLine {
+    &::after {
+      box-shadow: inset var(--colorShadowDarkSlightly) 0px 0px 0px 1px;
+    }
+    // &.directionTopLeft::after {
+    //   box-shadow: inset var(--colorShadowDarkSlightly) 0px 0px 0px 1px;
+    // }
+    // &.directionTopRight::after {
+    //   box-shadow: inset var(--colorShadowDarkSlightly) 0px 0px 0px 1px;
+    // }
+    // &.directionBottomLeft::after {
+    //   box-shadow: inset var(--colorShadowDarkSlightly) 0px 0px 0px 1px;
+    // }
+    // &.directionBottomRight::after {
+    //   box-shadow: inset var(--colorShadowDarkSlightly) 0px 0px 0px 1px;
+    // }
+  }
+
+  // direction rotating
+  $directionLeftRightOffset: -0.2px;
+  $directionTopBottomOffset: -0.5px;
+  &.directionTopLeft {
+    transform: rotate(180deg)
+      translate($directionLeftRightOffset, $directionTopBottomOffset);
+  }
+  &.directionTopRight {
+    transform: rotate(270deg) translate($directionLeftRightOffset, -0.1px);
+  }
+  &.directionBottomLeft {
+    transform: rotate(90deg)
+      translate($directionLeftRightOffset, $directionTopBottomOffset);
+  }
+  &.directionBottomRight {
+    transform: rotate(0deg)
+      translate($directionLeftRightOffset, $directionTopBottomOffset);
+  }
+  z-index: 50;
+}

@@ -1,11 +1,13 @@
 import { EDevices } from "constants/common";
 import { useStoreDevice } from "stores/useStoreDevice";
 
-export const useGetDeviceFromStore = () => {
+export const useStoreGetDevice = () => {
   let deviceFromStore;
   let isPhone;
+  let isDesktop;
 
   deviceFromStore = useStoreDevice.getState().device;
   isPhone = deviceFromStore === EDevices.phone;
-  return { isPhone, deviceFromStore };
+  isDesktop = !isPhone;
+  return { isPhone, isDesktop };
 };
