@@ -22,7 +22,7 @@ export const setArrowBeamStyle = ({
       position: "absolute",
       top: -1 * heightBetweenRefAndFloating - 1,
       left: rects.reference.x - floatingX,
-      height: heightBetweenRefAndFloating + 1,
+      height: heightBetweenRefAndFloating + 1.2,
       width: rects.reference.width,
     }));
   } else if (placement === "top") {
@@ -37,7 +37,7 @@ export const setArrowBeamStyle = ({
       position: "absolute",
       bottom: -1 * heightBetweenRefAndFloating - 1,
       left: rects.reference.x - floatingX,
-      height: heightBetweenRefAndFloating + 1,
+      height: heightBetweenRefAndFloating + 1.2,
       width: rects.reference.width,
     }));
   }
