@@ -25,6 +25,8 @@ const AFloatingMenu: FC<TFloatingElementProps> = ({
   placement,
   content,
 }) => {
+  console.log(radiusesBeamMode.beamRightDistanceX);
+
   return (
     <div
       ref={floating}
@@ -35,13 +37,15 @@ const AFloatingMenu: FC<TFloatingElementProps> = ({
         // ...floatingStyle,
         // @ts-ignore
         "--AFloatingMenuLeftRadius":
-          radiusesBeamMode.floatingLeft || radiusesBeamMode.floatingLeft === 0
-            ? `${radiusesBeamMode.floatingLeft}px`
+          radiusesBeamMode.floatingLeftRadius ||
+          radiusesBeamMode.floatingLeftRadius === 0
+            ? `${radiusesBeamMode.floatingLeftRadius}px`
             : "var(--borderRadiusBig)",
         // @ts-ignore
         "--AFloatingMenuRightRadius":
-          radiusesBeamMode.floatingRight || radiusesBeamMode.floatingRight === 0
-            ? `${radiusesBeamMode.floatingRight}px`
+          radiusesBeamMode.floatingRightRadius ||
+          radiusesBeamMode.floatingRightRadius === 0
+            ? `${radiusesBeamMode.floatingRightRadius}px`
             : "var(--borderRadiusBig)",
       }}
       className={cn(
@@ -72,14 +76,19 @@ const AFloatingMenu: FC<TFloatingElementProps> = ({
               className={cn(
                 st.arrowBeam,
                 st.arrowBeamLeftEdge,
-                radiusesBeamMode.beamLeft === 0 && st.arrowBeamEdgeFlat
+                // radiusesBeamMode.beamLeftDistanceX === 0 &&
+                //   st.beamLeftDistanceXFlat,
+                radiusesBeamMode.beamLeftDistanceX === 0 && st.arrowBeamEdgeFlat
               )}
             />
             <div
               className={cn(
                 st.arrowBeam,
                 st.arrowBeamRightEdge,
-                radiusesBeamMode.beamRight === 0 && st.arrowBeamEdgeFlat
+                // radiusesBeamMode.beamRightDistanceX === 0 &&
+                //   st.beamRightDistanceXFlat,
+                radiusesBeamMode.beamRightDistanceX === 0 &&
+                  st.arrowBeamEdgeFlat
               )}
             />
             {/* </div> */}
@@ -96,7 +105,10 @@ const AFloatingMenu: FC<TFloatingElementProps> = ({
               }}
               placement={placement}
               side={EACornerSide.Inside}
-              size={radiusesBeamMode.beamLeft}
+              size={[
+                radiusesBeamMode.beamLeftDistanceX,
+                radiusesBeamMode.beamLeftDistanceY,
+              ]}
               shadow={EACornerShadow.Neumorphic}
             />
             <ACorner
@@ -111,7 +123,10 @@ const AFloatingMenu: FC<TFloatingElementProps> = ({
                 className: cn(st.arrowCorner, st.arrowRightCorner),
               }}
               side={EACornerSide.Inside}
-              size={radiusesBeamMode.beamRight}
+              size={[
+                radiusesBeamMode.beamRightDistanceX,
+                radiusesBeamMode.beamRightDistanceY,
+              ]}
               shadow={EACornerShadow.Neumorphic}
             />
           </>

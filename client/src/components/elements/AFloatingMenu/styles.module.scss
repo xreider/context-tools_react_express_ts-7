@@ -49,7 +49,7 @@
   z-index: -1 !important;
   // background: red;
 
-  $offset: 12px;
+  $offset: 7px;
   .arrowBeam {
     // background: red;
     position: absolute;
@@ -70,15 +70,20 @@
     left: -$offset;
     background-image: linear-gradient(
       to left,
-      var(--colorShadowLightMedium) calc(-1 * var(--space_normal)),
+      var(--colorShadowLightMedium),
       transparent
     );
   }
   .arrowBeamRightEdge {
     right: -$offset;
+    // background-image: linear-gradient(
+    //   to right,
+    //   var(--colorShadowDarkMedium) calc(-1 * var(--space_normal)),
+    //   transparent
+    // );
     background-image: linear-gradient(
       to right,
-      var(--colorShadowDarkMedium) calc(-1 * var(--space_normal)),
+      var(--colorShadowDarkMedium),
       transparent
     );
   }

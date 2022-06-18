@@ -20,9 +20,9 @@ export const setArrowBeamStyle = ({
     setArrowStyle((state) => ({
       ...state,
       position: "absolute",
-      top: -1 * heightBetweenRefAndFloating,
+      top: -1 * heightBetweenRefAndFloating - 1,
       left: rects.reference.x - floatingX,
-      height: heightBetweenRefAndFloating,
+      height: heightBetweenRefAndFloating + 1,
       width: rects.reference.width,
     }));
   } else if (placement === "top") {
@@ -35,9 +35,9 @@ export const setArrowBeamStyle = ({
       ...state,
       top: "unset",
       position: "absolute",
-      bottom: -1 * heightBetweenRefAndFloating,
+      bottom: -1 * heightBetweenRefAndFloating - 1,
       left: rects.reference.x - floatingX,
-      height: heightBetweenRefAndFloating,
+      height: heightBetweenRefAndFloating + 1,
       width: rects.reference.width,
     }));
   }

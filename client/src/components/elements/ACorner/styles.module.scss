@@ -1,13 +1,16 @@
 @import "styles/includes/common/elements.scss";
 
 .ACorner_wrapper {
+  --distanceX: var(--space_normal);
+  --distanceY: var(--space_normal);
+
   // background-color: var(--colorBG);
   // position: relative;
   position: absolute;
   // overflow: hidden;
   background: transparent !important;
-  width: var(--ACornerSize);
-  height: var(--ACornerSize);
+  width: var(--distanceX);
+  height: var(--distanceY);
   display: flex;
   @include touchActionNone;
   svg {
@@ -29,7 +32,7 @@
       position: absolute;
       width: 200%;
       height: 200%;
-      border-radius: 500px;
+      border-radius: 100%;
       background-color: transparent;
       z-index: -1;
       // box-shadow: inset 4px 4px 8px var(--colorShadowDarkMedium),
@@ -37,24 +40,50 @@
     }
   }
 
-  &.placement_top {
-    top: 0;
-  }
+  // &.placement_top {
+  //   top: 0;
+  // }
 
-  &.placement_bottom {
-    bottom: 0;
-  }
+  // &.placement_bottom {
+  //   bottom: 0;
+  // }
 
   // positioning
   &.positionMinusOfThisWidth {
-    &.directionTopLeft,
+    &.directionTopLeft {
+      // background-color: red !important;
+      left: calc(-1 * var(--distanceX));
+      bottom: 0;
+      height: var(--distanceY);
+      width: var(--distanceX);
+    }
+    &.directionTopRight {
+      // background-color: green !important;
+      right: calc(-1 * var(--distanceY));
+      bottom: calc(-1 * var(--distanceX));
+      height: var(--distanceX);
+      width: var(--distanceY);
+      transform-origin: left top;
+    }
     &.directionBottomLeft {
-      left: calc(-1 * var(--ACornerSize));
+      height: var(--distanceX);
+      width: var(--distanceY);
+      transform-origin: left top;
     }
-    &.directionTopRight,
     &.directionBottomRight {
-      right: calc(-1 * var(--ACornerSize));
+      right: calc(-1 * var(--distanceX));
+      height: var(--distanceY);
+      width: var(--distanceX);
+      transform-origin: left top;
     }
+    // &.directionTopLeft,
+    // &.directionBottomLeft {
+    //   left: calc(-1 * var(--distanceX));
+    // }
+    // &.directionTopRight,
+    // &.directionBottomRight {
+    //   right: calc(-1 * var(--distanceY));
+    // }
   }
   // shadows
 

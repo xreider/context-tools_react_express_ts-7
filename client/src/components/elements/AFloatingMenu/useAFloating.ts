@@ -27,10 +27,12 @@ import { setBorderBeamAndFloatingRadiuses } from "./middlewares/setBorderBeamAnd
 import { IUseFloatingProps } from "./TypesAFloatingMenu";
 
 export interface PRadiusesBeamMode {
-  floatingLeft?: number;
-  floatingRight?: number;
-  beamLeft: number;
-  beamRight: number;
+  floatingLeftRadius?: number;
+  floatingRightRadius?: number;
+  beamLeftDistanceX: number;
+  beamLeftDistanceY: number;
+  beamRightDistanceX: number;
+  beamRightDistanceY: number;
 }
 
 export default function useAFloating(floatingProps: IUseFloatingProps) {
@@ -39,10 +41,12 @@ export default function useAFloating(floatingProps: IUseFloatingProps) {
   // const [floatingStyle, setFloatingStyle] = useState<CSSProperties>({});
   const [floatingDisappearing, setFloatingDisappearing] = useState(false);
   const [radiusesBeamMode, setRadiusesBeamMode] = useState<PRadiusesBeamMode>({
-    floatingLeft: 0,
-    floatingRight: 0,
-    beamLeft: 0,
-    beamRight: 0,
+    floatingLeftRadius: 0,
+    floatingRightRadius: 0,
+    beamLeftDistanceX: 0,
+    beamLeftDistanceY: 0,
+    beamRightDistanceX: 0,
+    beamRightDistanceY: 0,
   });
 
   const arrowRef = useRef<null | HTMLDivElement>(null);
@@ -78,7 +82,7 @@ export default function useAFloating(floatingProps: IUseFloatingProps) {
     { enabled: hasMenu }
   );
 
-  console.log("spaceToScreenEdges", spaceToScreenEdges);
+  // console.log("spaceToScreenEdges", spaceToScreenEdges);
 
   // console.log("heightANavbarTotal", heightANavbarTotal);
 

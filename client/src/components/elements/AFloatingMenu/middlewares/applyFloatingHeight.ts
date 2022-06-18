@@ -47,6 +47,6 @@ export const applyFloatingHeight = ({
   }
 
   Object.assign(elements.floating.style, {
-    maxHeight: `max(20vh, ${maxHeight}px)`,
+    maxHeight: `max(20vh, ${maxHeight + 1}px)`,
   });
 };

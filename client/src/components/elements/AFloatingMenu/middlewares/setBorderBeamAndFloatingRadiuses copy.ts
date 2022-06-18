@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { MiddlewareArguments } from "@floating-ui/react-dom-interactions";
 import { Dispatch, SetStateAction } from "react";
 import { PRadiusesBeamMode } from "../useAFloating";
@@ -18,6 +20,13 @@ export const setBorderBeamAndFloatingRadiuses = ({
 }: PSetBorderBeamAndFloatingRadiuses) => {
   if (!enable) return;
   const { x: floatingX, y: floatingY, rects, placement } = args;
+
+  let floatingLeftRadius = 0,
+    floatingRightRadius = 0;
+  beamLeftDistanceX = 0;
+  beamLeftDistanceY = 0;
+  beamRightDistanceX = 0;
+  beamRightDistanceY = 0;
 
   const heightOfReference = Math.max(
     rects.reference.height - borderRadiusReference,
@@ -68,22 +77,11 @@ export const setBorderBeamAndFloatingRadiuses = ({
         )
       )
     );
-  } else if (borderRadiusFloating >= fromLeftEdgeFloatingToLeftEdgeRef) {
-    // if left-right distance from ref to float are very little
-    // less than borderRadiusFloating
-    floatingLeftRadius = Math.max(0, fromLeftEdgeFloatingToLeftEdgeRef * 0.3);
-    beamLeftRadius = Math.max(0, fromLeftEdgeFloatingToLeftEdgeRef * 0.7);
-    // beamLeftRadius = Math.max(0, Math.floor(fromLeftEdgeFloatingToLeftEdgeRef));
-    // floatingLeftRadius = 0;
   } else {
     // if left-right distance from ref to float are between
     // sum of borderRadiusReference and borderRadiusFloating
     floatingLeftRadius = Math.max(0, fromLeftEdgeFloatingToLeftEdgeRef * 0.3);
     beamLeftRadius = Math.max(0, fromLeftEdgeFloatingToLeftEdgeRef * 0.7);
-    // beamLeftRadius = floatingLeftRadius = Math.max(
-    //   0,
-    //   Math.floor(fromLeftEdgeFloatingToLeftEdgeRef / 2)
-    // );
   }
 
   if (cutCornersInHalfMinWidth < fromRightEdgeFloatingToRightEdgeRef) {
@@ -97,19 +95,6 @@ export const setBorderBeamAndFloatingRadiuses = ({
         )
       )
     );
-  } else if (borderRadiusFloating >= fromLeftEdgeFloatingToLeftEdgeRef) {
-    // if left-right distance from ref to float are very little,
-    // less than borderRadiusFloating
-    floatingRightRadius = Math.max(
-      0,
-      fromRightEdgeFloatingToRightEdgeRef * 0.3
-    );
-    beamRightRadius = Math.max(0, fromRightEdgeFloatingToRightEdgeRef * 0.7);
-    // beamRightRadius = Math.max(
-    //   0,
-    //   Math.floor(fromRightEdgeFloatingToRightEdgeRef)
-    // );
-    // floatingRightRadius = 0;
   } else {
     // if left-right distance from ref to float are between
     // sum of borderRadiusReference and borderRadiusFloating
@@ -118,31 +103,14 @@ export const setBorderBeamAndFloatingRadiuses = ({
       fromRightEdgeFloatingToRightEdgeRef * 0.3
     );
     beamRightRadius = Math.max(0, fromRightEdgeFloatingToRightEdgeRef * 0.7);
-    // beamRightRadius = floatingRightRadius = Math.max(
-    //   0,
-    //   Math.floor(fromRightEdgeFloatingToRightEdgeRef / 2)
-    // );
   }
 
-  // // equal sides
-  // const minBeamRadius = Math.min(beamLeftRadius, beamRightRadius);
-  // setRadiusesBeamMode({
-  //   floatingLeft: floatingLeftRadius,
-  //   floatingRight: floatingRightRadius,
-  //   beamLeft:
-  //     minBeamRadius < borderRadiusReference / 2
-  //       ? beamLeftRadius
-  //       : minBeamRadius,
-  //   beamRight:
-  //     minBeamRadius < borderRadiusReference / 2
-  //       ? beamRightRadius
-  //       : minBeamRadius,
-  // });
-
   setRadiusesBeamMode({
-    floatingLeft: floatingLeftRadius,
-    floatingRight: floatingRightRadius,
-    beamLeft: beamLeftRadius,
-    beamRight: beamRightRadius,
+    floatingLeftRadius,
+    floatingRightRadius,
+    beamLeftDistanceX,
+    beamLeftDistanceY,
+    beamRightDistanceX,
+    beamRightDistanceY,
   });
 };

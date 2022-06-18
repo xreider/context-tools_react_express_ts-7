@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, FC } from "react";
+import React, { ComponentPropsWithoutRef, CSSProperties, FC } from "react";
 import cn from "classnames";
 import st from "./styles.module.scss";
 import { ReactComponent as CornerInside } from "./assets/cornerInside.svg";
@@ -27,12 +27,17 @@ export enum EACornerShadow {
 export interface PACorner {
   propsWrapper?: ComponentPropsWithoutRef<"div">;
   side: EACornerSide;
-  size: number | string;
+  size: number | string | [number, number] | [string, string];
   direction: EACornerDirection;
   placement?: Placement;
   shadow: EACornerShadow;
   fieldColorCN?: EFieldColorCN;
   positionMinusOfThisWidth?: boolean;
+}
+
+export interface PACornerCustomCSSProperties extends CSSProperties {
+  "--distanceX"?: number | string;
+  "--distanceY"?: number | string;
 }
 
 const ACorner: FC<PACorner> = ({
@@ -45,6 +50,30 @@ const ACorner: FC<PACorner> = ({
   placement,
   positionMinusOfThisWidth,
 }) => {
+  let style: PACornerCustomCSSProperties = React.useMemo(() => {
+    if (Array.isArray(size) && typeof size[0] === "number") {
+      return {
+        "--distanceX": `${size[0]}px`,
+        "--distanceY": `${size[1]}px`,
+      };
+    } else if (Array.isArray(size) && typeof size[0] === "string") {
+      return {
+        "--distanceX": size[0],
+        "--distanceY": size[1],
+      };
+    } else if (typeof size === "number") {
+      return {
+        "--distanceX": `${size}px`,
+        "--distanceY": `${size}px`,
+      };
+    } else if (typeof size === "string") {
+      return {
+        "--distanceX": size,
+        "--distanceY": size,
+      };
+    } else return {};
+  }, [size]);
+
   return (
     <div
       {...propsWrapper}
@@ -57,10 +86,7 @@ const ACorner: FC<PACorner> = ({
         propsWrapper?.className,
         placement && st[`placement_${placement}`]
       )}
-      style={{
-        // @ts-ignore
-        "--ACornerSize": typeof size === "number" ? `${size}px` : size,
-      }}
+      style={style}
     >
       <div className={cn(st.ACorner_container)} />
       {side === EACornerSide.Inside && <CornerInside />}
