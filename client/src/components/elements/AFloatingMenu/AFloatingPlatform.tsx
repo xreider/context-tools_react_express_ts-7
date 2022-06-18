@@ -17,6 +17,13 @@ const AFloatingPlatform: FC<PAFloatingPlatform> = ({
   const { hasMenu, floatingOpened }: ReturnTypeUseFloating = useAFloatingResult;
   return (
     <>
+      {hasMenu && floatingOpened && (
+        <AFloatingMenu
+          classNameWrapper={floatingMenu?.classNameWrapper}
+          {...useAFloatingResult}
+          {...floatingProps}
+        />
+      )}
       {React.cloneElement(triggerElement, {
         // hasMenu,
         // floatingOpened,
@@ -30,13 +37,6 @@ const AFloatingPlatform: FC<PAFloatingPlatform> = ({
           arrowKind: floatingProps.arrowKind,
         },
       })}
-      {hasMenu && floatingOpened && (
-        <AFloatingMenu
-          classNameWrapper={floatingMenu?.classNameWrapper}
-          {...useAFloatingResult}
-          {...floatingProps}
-        />
-      )}
     </>
   );
 };

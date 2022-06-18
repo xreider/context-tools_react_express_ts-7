@@ -4,7 +4,7 @@
   // background-color: var(--colorBG);
   // position: relative;
   position: absolute;
-  overflow: hidden;
+  // overflow: hidden;
   background: transparent !important;
   width: var(--ACornerSize);
   height: var(--ACornerSize);
@@ -16,18 +16,25 @@
     height: 100%;
     min-height: 100%;
     min-width: 100%;
+    overflow: visible;
   }
 
-  &::after {
-    content: "";
+  .ACorner_container {
     position: absolute;
-    width: 200%;
-    height: 200%;
-    border-radius: 500px;
-    background-color: transparent;
-    z-index: -1;
-    // box-shadow: inset 4px 4px 8px var(--colorShadowDarkMedium),
-    //   inset -4px -4px 8px var(--colorShadowLightMedium);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      border-radius: 500px;
+      background-color: transparent;
+      z-index: -1;
+      // box-shadow: inset 4px 4px 8px var(--colorShadowDarkMedium),
+      //   inset -4px -4px 8px var(--colorShadowLightMedium);
+    }
   }
 
   &.placement_top {
@@ -52,23 +59,23 @@
   // shadows
 
   &.shadowNeumorphic {
-    &.directionTopLeft::after {
+    &.directionTopLeft .ACorner_container::after {
       box-shadow: inset 4px 4px 8px -1px var(--colorShadowLightMedium);
     }
-    &.directionTopRight::after {
+    &.directionTopRight .ACorner_container::after {
       box-shadow: inset -2px 2px 8px -1px var(--colorShadowDarkMedium),
         inset 4px 4px 8px -1px var(--colorShadowLightMedium);
     }
-    &.directionBottomLeft::after {
+    &.directionBottomLeft .ACorner_container::after {
       box-shadow: inset 4px 4px 8px -1px var(--colorShadowLightMedium);
     }
-    &.directionBottomRight::after {
-      box-shadow: inset 3px 3px 8px -2px var(--colorShadowDarkMedium);
+    &.directionBottomRight .ACorner_container::after {
+      box-shadow: inset 4px 3px 8px var(--colorShadowDarkMedium);
     }
   }
 
   &.shadowLine {
-    &::after {
+    .ACorner_container::after {
       box-shadow: inset var(--colorShadowDarkSlightly) 0px 0px 0px 1px;
     }
     // &.directionTopLeft::after {
@@ -89,20 +96,37 @@
   $directionLeftRightOffset: -0.2px;
   $directionTopBottomOffset: -0.5px;
   &.directionTopLeft {
-    transform: rotate(180deg)
-      translate($directionLeftRightOffset, $directionTopBottomOffset);
+    transform: rotate(180deg);
   }
   &.directionTopRight {
-    transform: rotate(270deg)
-      translate($directionLeftRightOffset, $directionTopBottomOffset);
+    transform: rotate(270deg);
   }
   &.directionBottomLeft {
-    transform: rotate(90deg)
-      translate($directionLeftRightOffset, $directionTopBottomOffset);
+    transform: rotate(90deg);
   }
   &.directionBottomRight {
-    transform: rotate(0deg)
-      translate($directionLeftRightOffset, $directionTopBottomOffset);
+    transform: rotate(0deg);
   }
+
+  // // direction rotating
+  // $directionLeftRightOffset: -0.2px;
+  // $directionTopBottomOffset: -0.5px;
+  // &.directionTopLeft {
+  //   transform: rotate(180deg)
+  //     translate($directionLeftRightOffset, $directionTopBottomOffset);
+  // }
+  // &.directionTopRight {
+  //   transform: rotate(270deg)
+  //     translate($directionLeftRightOffset, $directionTopBottomOffset);
+  // }
+  // &.directionBottomLeft {
+  //   transform: rotate(90deg)
+  //     translate($directionLeftRightOffset, $directionTopBottomOffset);
+  // }
+  // &.directionBottomRight {
+  //   transform: rotate(0deg)
+  //     translate($directionLeftRightOffset, $directionTopBottomOffset);
+  // }
+
   z-index: 50;
 }

@@ -15,7 +15,7 @@ const useRefreshWebktiScrollbar = () => {
 
     setTimeout(() => {
       document.body.classList.remove("_refreshingWebkitScrollBar");
-    }, 5000);
+    }, 1000);
   };
 
   useEffect(() => {

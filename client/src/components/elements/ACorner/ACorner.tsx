@@ -62,6 +62,7 @@ const ACorner: FC<PACorner> = ({
         "--ACornerSize": typeof size === "number" ? `${size}px` : size,
       }}
     >
+      <div className={cn(st.ACorner_container)} />
       {side === EACornerSide.Inside && <CornerInside />}
       {side === EACornerSide.Outside && <CornerOutside />}
     </div>
